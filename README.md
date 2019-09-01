@@ -16,3 +16,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
+
+### gh-pages deploy
+
+https://create-react-app.dev/docs/deployment#step-2-install-gh-pages-and-add-deploy-to-scripts-in-packagejson
