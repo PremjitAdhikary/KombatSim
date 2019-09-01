@@ -40,7 +40,7 @@ public class DarkDamage extends BaseDamage {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(DETERIORATION_PERCENTAGE, Double.toString(deteriorationPercentage))
 				.buildPartial();
 	}

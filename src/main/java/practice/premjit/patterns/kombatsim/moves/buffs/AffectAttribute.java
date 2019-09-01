@@ -88,7 +88,7 @@ public class AffectAttribute extends Buff implements FlipFlopable {
 	@Override
 	public Map<String, String> mapify() {
 		LogMapBuilder builder = KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(ATTRIBUTE, (affectPrimary ? "Primary" : attributeType.name() ))
 				.with(AFFECT, affectType.name());
 		if (addend != null)

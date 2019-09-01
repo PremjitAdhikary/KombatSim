@@ -1,6 +1,7 @@
 package practice.premjit.patterns.kombatsim.commands.hero;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import practice.premjit.patterns.kombatsim.attributes.AttributeType;
@@ -34,7 +35,7 @@ public class MojoBasedAction implements ActionCommand, Identifiable {
 	double mojoCost;
 	int id;
 	
-	public MojoBasedAction(AbstractFighter fighter, String name, Supplier<Move> moveSupplier) {
+	private MojoBasedAction(AbstractFighter fighter, String name, Supplier<Move> moveSupplier) {
 		this.fighter = fighter;
 		this.name = name;
 		this.moveSupplier = moveSupplier;
@@ -53,20 +54,12 @@ public class MojoBasedAction implements ActionCommand, Identifiable {
 		chargeMojo();
 		sendMove();
 	}
-
-	public void setMojoCost(double mojoCost) {
-		this.mojoCost = mojoCost;
-	}
-	
-	public void setRecipient(Recipient r) {
-		this.recipient = r;
-	}
 	
 	public Map<String, String> mapify(Move move) {
 		try {
 			return KombatLogger.mapBuilder()
 					.withName(name)
-					.with(((Loggable) move).mapify())
+					.withPartial(((Loggable) move).mapify())
 					.build();
 		} catch (Exception e) {
 			return null;
@@ -100,6 +93,81 @@ public class MojoBasedAction implements ActionCommand, Identifiable {
 	@Override
 	public int id() {
 		return id;
+	}
+	
+	// For Type safety Builder
+	public static MojoBasedAction create(Consumer<MojoActionFighterBuilder> block) {
+		MojoActionBuilder builder = new MojoActionBuilder();
+		block.accept(builder);
+		return builder.build();
+	}
+	
+	public static interface MojoActionFighterBuilder {
+		MojoActionNameBuilder fighter(AbstractFighter fighter);
+	}
+
+	public static interface MojoActionNameBuilder {
+		MojoActionMoveBuilder name(String name);
+	}
+
+	public static interface MojoActionMoveBuilder {
+		MojoActionBuilder move(Supplier<Move> move);
+	}
+	
+	public static class MojoActionBuilder 
+			implements MojoActionFighterBuilder, MojoActionNameBuilder, MojoActionMoveBuilder {
+		private AbstractFighter fighter;
+		private String name;
+		
+		private MojoBasedAction action;
+		
+		private MojoActionBuilder() { }
+
+		@Override
+		public MojoActionBuilder fighter(AbstractFighter fighter) {
+			this.fighter = fighter;
+			return this;
+		}
+
+		@Override
+		public MojoActionBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		@Override
+		public MojoActionBuilder move(Supplier<Move> move) {
+			action = new MojoBasedAction(this.fighter, this.name, move);
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default Recipient.OPPONENT
+		 * 
+		 * @param r
+		 * @return
+		 */
+		public MojoActionBuilder affect(Recipient r) {
+			this.action.recipient = r;
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 80
+		 * 
+		 * @param cost
+		 * @return
+		 */
+		public MojoActionBuilder mojoCost(double cost) {
+			this.action.mojoCost = cost;
+			return this;
+		}
+		
+		private MojoBasedAction build() {
+			if (action == null)
+				throw new IllegalArgumentException("Required properties are not set");
+			return action;
+		}
 	}
 
 }

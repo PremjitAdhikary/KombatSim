@@ -42,7 +42,8 @@ class ActionSpellTest {
 	@BeforeEach
 	void init() {
 		KombatLogger.getLogger().disableLogging();
-		spell = new ActionSpell(mockMage, "test", mockBook, null, 3);
+		spell = ActionSpell.create( action -> 
+					action.mage(mockMage).name("test").book(mockBook).move(null).cooldown(3) );
 	}
 	
 	@Test

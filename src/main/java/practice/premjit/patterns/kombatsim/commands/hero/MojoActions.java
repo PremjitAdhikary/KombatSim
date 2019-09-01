@@ -18,48 +18,52 @@ public final class MojoActions {
 	
 	// flash powers
 	
-	private static Function<Hero, MojoBasedAction> haste = hero -> {
-		MojoBasedAction action = new MojoBasedAction(hero, AllActions.HASTE.value(), 
-				() -> AffectAttribute.create(buff -> buff
-						.affectAttribute(AttributeType.DEXTERITY)
-						.duration(15)
-						.multiplicand(3)));
-		action.setRecipient(Recipient.SELF);
-		action.setMojoCost(95);
-		return action;
-	};
+	private static Function<Hero, MojoBasedAction> haste = hero -> 
+		MojoBasedAction.create( action -> 
+			action
+				.fighter(hero)
+				.name(AllActions.HASTE.value())
+				.move( () -> 
+					AffectAttribute.create( buff -> 
+						buff.affectAttribute(AttributeType.DEXTERITY).duration(15).multiplicand(3)
+					)
+				)
+				.affect(Recipient.SELF)
+				.mojoCost(95)
+		);
 	
-	private static Function<Hero, MojoBasedAction> arcLightning = hero -> {
-		MojoBasedAction action = new MojoBasedAction(hero, AllActions.ARC_LIGHTNING.value(), 
-				() -> ShockDamage.create(shock -> shock
-									.max(50)
-									.duration(25)));
-		action.setMojoCost(90);
-		return action;
-	};
+	private static Function<Hero, MojoBasedAction> arcLightning = hero -> 
+		MojoBasedAction.create( action -> 
+			action
+				.fighter(hero)
+				.name(AllActions.ARC_LIGHTNING.value())
+				.move( () -> ShockDamage.create( shock -> shock.max(50).duration(25) ) )
+				.mojoCost(90)
+		);
 	
 	// superman powers
-	
-	private static Function<Hero, MojoBasedAction> heatVision = hero -> {
-		MojoBasedAction action = new MojoBasedAction(hero, AllActions.HEAT_VISION.value(),
-				() -> FireDamage.create(fire -> fire
-								.min(100)
-								.max(100)
-								.damage(20)
-								.duration(4)));
-		action.setMojoCost(160);
-		return action;
-	};
-	
-	private static Function<Hero, MojoBasedAction> freezeBreath = hero -> {
-		MojoBasedAction action = new MojoBasedAction(hero, AllActions.FREEZE_BREATH.value(),
-				() -> ColdDamage.create(cold -> cold
-								.min(15)
-								.deterioration(20)
-								.duration(45)));
-		action.setMojoCost(150);
-		return action;
-	};
+		
+	private static Function<Hero, MojoBasedAction> heatVision = hero -> 
+		MojoBasedAction.create( action -> 
+			action
+				.fighter(hero)
+				.name(AllActions.HEAT_VISION.value())
+				.move( () -> 
+					FireDamage.create( fire -> 
+						fire.min(100).max(100).damage(20).duration(4) 
+					) 
+				)
+				.mojoCost(160)
+		);
+		
+	private static Function<Hero, MojoBasedAction> freezeBreath = hero -> 
+		MojoBasedAction.create( action -> 
+			action
+				.fighter(hero)
+				.name(AllActions.FREEZE_BREATH.value())
+				.move( () -> ColdDamage.create( cold -> cold.min(15).deterioration(20).duration(45) ) )
+				.mojoCost(150)
+		);
 	
 	static {
 		actionMap.put(AllActions.HASTE.value(), haste);

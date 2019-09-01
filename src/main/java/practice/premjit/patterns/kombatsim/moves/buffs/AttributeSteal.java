@@ -65,7 +65,7 @@ public class AttributeSteal extends Buff {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(ATTRIBUTE_STEAL, steal.name())
 				.with(ATTRIBUTE_RESTORE, restore.name())
 				.with(DURATION, String.valueOf(duration))

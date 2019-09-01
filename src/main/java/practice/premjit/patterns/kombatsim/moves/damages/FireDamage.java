@@ -60,7 +60,7 @@ public class FireDamage extends BaseDamage {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(DURATION, Integer.toString(burnDuration))
 				.with(BURN_DAMAGE, Double.toString(burnDamage))
 				.buildPartial();

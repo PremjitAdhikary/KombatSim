@@ -3,6 +3,7 @@ package practice.premjit.patterns.kombatsim.fighters.decorators;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import practice.premjit.patterns.kombatsim.attributes.Attribute;
@@ -23,7 +24,7 @@ import practice.premjit.patterns.kombatsim.strategies.physical.BasicActionStrate
  * Weapon has the following characteristics: <p><ul>
  * <li>Adds one or more additional actions of type {@link WeaponCommand}.
  * <li>The said actions can be used in conjunction with original set of actions or the original set can be ignored. 
- * This can be set with {@link #replaceActions()}
+ * This can be set with {@link #replaceFighterAttacks()}
  * <li>Has custom {@link ActionStrategy} implementation {@link WeaponActionStrategy}.
  * <li>If replaceActions is true {@link WeaponActionStrategy} chooses among the WeaponCommand. If not, there's a 
  * chance that the original ActionStrategy is invoked for the original ActionCommands
@@ -36,17 +37,9 @@ public class Weapon extends AbstractFighterDecorator {
 	private String weaponName;
 	private boolean replaceActions;
 
-	public Weapon(AbstractFighter fighter, String weaponName) {
+	private Weapon(AbstractFighter fighter, String weaponName) {
 		super(fighter);
 		this.weaponName = weaponName;
-	}
-	
-	public void replaceActions() {
-		replaceActions = true;
-	}
-	
-	public String weaponName() {
-		return weaponName;
 	}
 	
 	public boolean areOriginalActionsReplaced() {
@@ -77,11 +70,6 @@ public class Weapon extends AbstractFighterDecorator {
 			return;
 		equipped();
 		this.actionStrategy = new WeaponActionStrategy(this);
-	}
-	
-	public void buildAndAddWeaponCommand(String commandName, Function<AbstractFighter, Move> moveFunction) {
-		WeaponCommand action = new WeaponCommand(commandName, moveFunction);
-		addAction(action);
 	}
 	
 	class WeaponActionStrategy extends BasicActionStrategy {
@@ -165,11 +153,96 @@ public class Weapon extends AbstractFighterDecorator {
 				return KombatLogger.mapBuilder()
 						.withName(actionName)
 						.with("Weapon", weaponName)
-						.with(((Loggable) move).mapify())
+						.withPartial(((Loggable) move).mapify())
 						.build();
 			} catch (Exception e) {
 				return null;
 			}
+		}
+		
+	}
+	
+	// For Type safety Builder
+	
+	public static Weapon create(Consumer<WeaponNameBuilder> block) {
+		WeaponBuilder builder = new WeaponBuilder();
+		block.accept(builder);
+		return builder.build();
+	}
+	
+	public interface WeaponNameBuilder {
+		WeaponFighterBuilder name(String name);
+	}
+	
+	public interface WeaponFighterBuilder {
+		WeaponOptionsBuilder wielder(AbstractFighter fighter);
+	}
+	
+	public interface WeaponOptionsBuilder {
+		WeaponCommandNameBuilder addCommand();
+		WeaponOptionsBuilder replaceFighterAttacks();
+	}
+	
+	public interface WeaponCommandNameBuilder {
+		WeaponMoveBuilder withName(String commandName);
+	}
+	
+	public interface WeaponMoveBuilder {
+		WeaponOptionsBuilder andMove(Function<AbstractFighter, Move> moveFunction);
+	}
+	
+	public static class WeaponBuilder implements WeaponFighterBuilder, WeaponNameBuilder, 
+			WeaponOptionsBuilder, WeaponCommandNameBuilder, WeaponMoveBuilder {
+		private String weaponName;
+		private Weapon weapon;
+		
+		private String commandName;
+		
+		private WeaponBuilder() { }
+
+		@Override
+		public WeaponFighterBuilder name(String name) {
+			weaponName = name;
+			return this;
+		}
+
+		@Override
+		public WeaponOptionsBuilder wielder(AbstractFighter fighter) {
+			this.weapon = new Weapon(fighter, weaponName);
+			return this;
+		}
+		
+		@Override
+		public WeaponCommandNameBuilder addCommand() {
+			return this;
+		}
+
+		@Override
+		public WeaponMoveBuilder withName(String commandName) {
+			this.commandName = commandName;
+			return this;
+		}
+
+		@Override
+		public WeaponOptionsBuilder andMove(Function<AbstractFighter, Move> moveFunction) {
+			WeaponCommand action = weapon.new WeaponCommand(commandName, moveFunction);
+			weapon.addAction(action);
+			return this;
+		}
+
+		@Override
+		public WeaponOptionsBuilder replaceFighterAttacks() {
+			weapon.replaceActions = true;
+			return this;
+		}
+		
+		private Weapon build() {
+			if (weapon == null)
+				throw new IllegalArgumentException("Required properties are not set");
+			if (weapon.allActions.isEmpty())
+				throw new IllegalArgumentException("At least 1 WeaponCommand required ");
+			weapon.equip();
+			return weapon;
 		}
 		
 	}

@@ -1,5 +1,11 @@
 package practice.premjit.patterns.kombatsim.attributes;
 
+/**
+ * These are are attributes which keep varying as the fight goes on. These act more of a resource rather than a 
+ * property.
+ * 
+ * @author Premjit Adhikary
+ */
 public class VariableAttribute extends Attribute {
 	private double current;
 

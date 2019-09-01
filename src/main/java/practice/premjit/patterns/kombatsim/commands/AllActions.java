@@ -32,7 +32,8 @@ public enum AllActions {
 	THERMITE_PELLETS ("Thermite Pellets"),
 	GAS_PELLETS ("Gas Pellets"),
 	MANA_BURNERS ("Mana Burners"),
-	KRYPTONITE ("Kryptonite");
+	KRYPTONITE ("Kryptonite"),
+	HEAL_PILL ("Heal Pill");
 	
 	private static final EnumSet<AllActions> PHYSICALS = EnumSet.of(PUNCH, KICK, CROSS, CHOP, FLYING_KICK);
 	private static final EnumSet<AllActions> PROJECTILES = EnumSet.of(SHURIKEN, BATARANG, FREEZE_GRENADES, 
@@ -43,7 +44,7 @@ public enum AllActions {
 	private static final EnumSet<AllActions> FIRES = EnumSet.of(HEAT_VISION, FLAME_BREATH, BURN);
 	private static final EnumSet<AllActions> COLDS = EnumSet.of(FREEZE_BREATH, ICE_BLAST, CHILL);
 	private static final EnumSet<AllActions> SHOCKS = EnumSet.of(ARC_LIGHTNING, PARALYZE);
-	private static final EnumSet<AllActions> BUFFS = EnumSet.of(HASTE, CURSE, LIFE_STEAL, BLEED);
+	private static final EnumSet<AllActions> BUFFS = EnumSet.of(HASTE, CURSE, LIFE_STEAL, BLEED, HEAL_PILL);
 	
 	private String value;
 	

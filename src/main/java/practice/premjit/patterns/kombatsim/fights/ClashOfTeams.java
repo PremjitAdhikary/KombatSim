@@ -35,6 +35,15 @@ public class ClashOfTeams {
 			((TagTeam) teamB).addTeammate(FighterPool.karateka(arena, "Chuck"));
 			((TagTeam) teamB).addTeammate(FighterPool.boxer(arena, "Tyson"));
 			break;
+		case 3:
+			teamA = new OffenderDefenderTeam(arena);
+			((OffenderDefenderTeam) teamA).addOffender(FighterPool.samurai(arena, "Yoshimitsu"));
+			((OffenderDefenderTeam) teamA).addDefender(FighterPool.ninja(arena, "Naruto"));
+			teamB = new TagTeam(arena);
+			((TagTeam) teamB).addTeammate(FighterPool.taekwondo(arena, "Frank"));
+			((TagTeam) teamB).addTeammate(FighterPool.karateka(arena, "Chuck"));
+			((TagTeam) teamB).addTeammate(FighterPool.boxer(arena, "Tyson"));
+			break;
 		}
 		arena.addFighter(teamA);
 		arena.addFighter(teamB);
@@ -43,6 +52,7 @@ public class ClashOfTeams {
 	private static int getChoice() {
 		System.out.println("Press '1' For Offender Defender Fight");
 		System.out.println("Press '2' For Tag Team Fight");
+		System.out.println("Press '3' For OD vs Tag Team Fight");
 		Scanner sc = new Scanner(System.in);
 		while (true) {
 			int choice = sc.nextInt();

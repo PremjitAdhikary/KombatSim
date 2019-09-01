@@ -1,6 +1,7 @@
 package practice.premjit.patterns.kombatsim.fighters.decorators;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import practice.premjit.patterns.kombatsim.commands.ActionCommand;
@@ -28,25 +29,9 @@ public class Projectiles extends AbstractFighterDecorator {
 	private Supplier<Move> moveSupplier;
 	private Recipient recipient;
 
-	public Projectiles(AbstractFighter fighter) {
+	private Projectiles(AbstractFighter fighter) {
 		super(fighter);
 		recipient = Recipient.OPPONENT;
-	}
-
-	public void setProjectileName(String projectileName) {
-		this.projectileName = projectileName;
-	}
-
-	public void setProjectileCount(int projectileCount) {
-		this.projectileCount = projectileCount;
-	}
-
-	public void setMoveSupplier(Supplier<Move> moveSupplier) {
-		this.moveSupplier = moveSupplier;
-	}
-
-	public void setRecipient(Recipient recipient) {
-		this.recipient = recipient;
 	}
 
 	@Override
@@ -101,13 +86,83 @@ public class Projectiles extends AbstractFighterDecorator {
 				return KombatLogger.mapBuilder()
 						.withName(projectileName)
 						.with("Count", String.valueOf(projectileCount))
-						.with(((Loggable) move).mapify())
+						.withPartial(((Loggable) move).mapify())
 						.build();
 			} catch (Exception e) {
 				return null;
 			}
 		}
 		
+	}
+	
+	// For Type safety Builder
+	
+	public static Projectiles create(Consumer<ProjectilesFighterBuilder> block) {
+		ProjectilesBuilder builder = new ProjectilesBuilder();
+		block.accept(builder);
+		return builder.build();
+	}
+	
+	public interface ProjectilesFighterBuilder {
+		ProjectilesNameBuilder forFighter(AbstractFighter fighter);
+	}
+	
+	public interface ProjectilesNameBuilder {
+		ProjectilesCountBuilder name(String name);
+	}
+	
+	public interface ProjectilesCountBuilder {
+		ProjectilesMoveBuilder count(int count);
+	}
+	
+	public interface ProjectilesMoveBuilder {
+		ProjectilesOptionalsBuilder move(Supplier<Move> supplier);
+	}
+	
+	public interface ProjectilesOptionalsBuilder {
+		ProjectilesOptionalsBuilder recipient(Recipient r);
+	}
+	
+	public static class ProjectilesBuilder implements ProjectilesFighterBuilder, ProjectilesNameBuilder, 
+			ProjectilesCountBuilder, ProjectilesMoveBuilder, ProjectilesOptionalsBuilder {
+		private Projectiles projectiles;
+
+		@Override
+		public ProjectilesNameBuilder forFighter(AbstractFighter fighter) {
+			projectiles = new Projectiles(fighter);
+			return this;
+		}
+
+		@Override
+		public ProjectilesCountBuilder name(String name) {
+			projectiles.projectileName = name;
+			return this;
+		}
+
+		@Override
+		public ProjectilesMoveBuilder count(int count) {
+			projectiles.projectileCount = count;
+			return this;
+		}
+
+		@Override
+		public ProjectilesOptionalsBuilder move(Supplier<Move> supplier) {
+			projectiles.moveSupplier = supplier;
+			return this;
+		}
+
+		@Override
+		public ProjectilesOptionalsBuilder recipient(Recipient r) {
+			projectiles.recipient = r;
+			return this;
+		}
+		
+		private Projectiles build() {
+			if (projectiles == null)
+				throw new IllegalArgumentException("Required properties are not set");
+			projectiles.equip();
+			return projectiles;
+		}
 	}
 
 }

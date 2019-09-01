@@ -60,7 +60,7 @@ public abstract class AbstractSpell implements Identifiable {
 		return mage.currentMana() > manaCost;
 	}
 
-	public void setManaCost(double manaCost) {
+	protected void setManaCost(double manaCost) {
 		this.manaCost = manaCost;
 	}
 	

@@ -1,5 +1,7 @@
 package practice.premjit.patterns.kombatsim.common.logging;
 
+import static practice.premjit.patterns.kombatsim.common.logging.SourcesAndEventsConstants.*;
+
 import java.util.Map;
 
 import practice.premjit.patterns.kombatsim.commands.AllActions;
@@ -30,42 +32,42 @@ public class Commentator extends KombatLogger {
 	
 	private void logInfo(Map<String, String> source, Map<String, String> event) {
 		String mate;
-		switch(event.get("Name")) {
-		case "Fighter Added":
-			if (event.get("As").equals("Champion")) {
-				champion = source.get("Fighter Name");
-				championSubtype = source.get("Fighter Subtype");
+		switch(event.get(NAME)) {
+		case FIGHTER_ADDED:
+			if (event.get(AS).equals(CHAMPION)) {
+				champion = source.get(FIGHTER_NAME);
+				championSubtype = source.get(FIGHTER_SUBTYPE);
 				System.out.println("Our first fighter " + champion + "(" + championSubtype + ") enters the arena!");
 			}
-			if (event.get("As").equals("Challenger")) {
-				challenger = source.get("Fighter Name");
-				challengerSubtype = source.get("Fighter Subtype");
+			if (event.get(AS).equals(CHALLENGER)) {
+				challenger = source.get(FIGHTER_NAME);
+				challengerSubtype = source.get(FIGHTER_SUBTYPE);
 				System.out.println("And to fight him we have " + challenger + "(" + challengerSubtype + ")!!");
 			}
 			break;
-		case "Fight Start":
+		case FIGHT_START:
 			System.out.println("FIGHT !!!!\n");
 			break;
-		case "Fight End":
-			System.out.println("It's Over! A " + event.get("Result By") +"!!!\n");
+		case FIGHT_END:
+			System.out.println("It's Over! A " + event.get(RESULT_BY) +"!!!\n");
 			break;
-		case "Teammate Added":
-			mate = source.get("Fighter Name") + "(" + source.get("Fighter Subtype") + ")";
-			System.out.println(mate + " added to "+ event.get("Team") +"\n");
+		case TEAMMATE_ADDED:
+			mate = source.get(FIGHTER_NAME) + "(" + source.get(FIGHTER_SUBTYPE) + ")";
+			System.out.println(mate + " added to "+ event.get(TEAM) +"\n");
 			break;
 		case "Tag And Switch":
-			mate = source.get("Fighter Name") + "(" + source.get("Fighter Subtype") + ")";
+			mate = source.get(FIGHTER_NAME) + "(" + source.get(FIGHTER_SUBTYPE) + ")";
 			System.out.println(mate + " switched into the ring!\n");
 			break;
-		case "Knock Out":
-			mate = source.get("Fighter Name") + "(" + source.get("Fighter Subtype") + ")";
+		case KNOCK_OUT:
+			mate = source.get(FIGHTER_NAME) + "(" + source.get(FIGHTER_SUBTYPE) + ")";
 			System.out.println(mate + " is Knocked Out!\n");
 			break;
-		case "Won":
-		case "Lost":
-		case "Draw":
-			mate = source.get("Fighter Name") + "(" + source.get("Fighter Subtype") + ")";
-			System.out.println(mate + " "+ event.get("Name") +"!!!\n");
+		case WON:
+		case LOST:
+		case DRAW:
+			mate = source.get(FIGHTER_NAME) + "(" + source.get(FIGHTER_SUBTYPE) + ")";
+			System.out.println(mate + " "+ event.get(NAME) +"!!!\n");
 			break;
 		default:
 			System.out.println("?????");
@@ -77,45 +79,45 @@ public class Commentator extends KombatLogger {
 	private static String[] actionAdjectives = {"Excellent ", "A powerful ", "Magnificient ", "What a "};
 	private static String[] weaponAdjectives = {"A menacing ", "Dangerous ", "A deadly "};
 	private void logAction(Map<String, String> source, Map<String, String> event) {
-		String attackName = event.get("Name");
+		String attackName = event.get(NAME);
 		switch(attackType(AllActions.getByValue(attackName))) {
 		case "Physical":
 			System.out.println(actionAdjectives[Randomizer.randomInteger(actionAdjectives.length-1)] 
-					+ attackName + " by " + source.get("Fighter Name") + "...");
+					+ attackName + " by " + source.get(FIGHTER_NAME) + "...");
 			break;
 		case "Projectile":
-			System.out.println(attackName + " thrown by " + source.get("Fighter Name") + "...");
+			System.out.println(attackName + " thrown by " + source.get(FIGHTER_NAME) + "...");
 			break;
 		case "Weapon":
 			System.out.println(weaponAdjectives[Randomizer.randomInteger(weaponAdjectives.length-1)] 
-					+ attackName +" by " + source.get("Fighter Name") + "...");
+					+ attackName +" by " + source.get(FIGHTER_NAME) + "...");
 			break;
 		case "Fire":
-			System.out.println("Hot! Hot!! Hot!!! " + attackName + " by " + source.get("Fighter Name") + "...");
+			System.out.println("Hot! Hot!! Hot!!! " + attackName + " by " + source.get(FIGHTER_NAME) + "...");
 			break;
 		case "Cold":
-			System.out.println("Brrrrr!!! That's Cold. " + attackName + " by " + source.get("Fighter Name") + "...");
+			System.out.println("Brrrrr!!! That's Cold. " + attackName + " by " + source.get(FIGHTER_NAME) + "...");
 			break;
 		case "Shock":
-			System.out.println("Look at that!!! " + attackName + " by " + source.get("Fighter Name") + ". "
-					+ opponent(source.get("Fighter Name")) + " is shocked!!");
+			System.out.println("Look at that!!! " + attackName + " by " + source.get(FIGHTER_NAME) + ". "
+					+ opponent(source.get(FIGHTER_NAME)) + " is shocked!!");
 			break;
 		case "Buff":
 			switch(attackName) {
 			case "Haste":
-				System.out.println(source.get("Fighter Name") + " Hastes himself!! Look at the speed...");
+				System.out.println(source.get(FIGHTER_NAME) + " Hastes himself!! Look at the speed...");
 				break;
 			case "Life Steal":
-				System.out.println(source.get("Fighter Name") + " casts a Life Steal on " 
-						+ opponent(source.get("Fighter Name")) + ". Both Offensive and Defensive Spell!");
+				System.out.println(source.get(FIGHTER_NAME) + " casts a Life Steal on " 
+						+ opponent(source.get(FIGHTER_NAME)) + ". Both Offensive and Defensive Spell!");
 				break;
 			case "Bleed":
-				System.out.println(source.get("Fighter Name") + " casts a Bleed spell. That's gotta hurt!");
+				System.out.println(source.get(FIGHTER_NAME) + " casts a Bleed spell. That's gotta hurt!");
 				break;
 			}
 			break;
 		default:
-			System.out.println(attackName + " by " + source.get("Fighter Name") + "???");
+			System.out.println(attackName + " by " + source.get(FIGHTER_NAME) + "???");
 		}
 	}
 	
@@ -139,19 +141,19 @@ public class Commentator extends KombatLogger {
 	
 	private void logReaction(Map<String, String> source, Map<String, String> event) {
 		if (event == null) {
-			System.out.println(source.get("Fighter Name") + " is hit!! \n");
+			System.out.println(source.get(FIGHTER_NAME) + " is hit!! \n");
 			return;
 		}
 		
-		switch (AllReactions.getByValue(event.get("Name"))) {
+		switch (AllReactions.getByValue(event.get(NAME))) {
 		case BLOCK:
-			System.out.println("Blocked by " + source.get("Fighter Name") + "!");
+			System.out.println("Blocked by " + source.get(FIGHTER_NAME) + "!");
 			break;
 		case EVADE:
 			if (Double.parseDouble(event.get("Damage Amount")) > 0.0) 
-				System.out.println("Impossible for " + source.get("Fighter Name") + " to evade it!");
+				System.out.println("Impossible for " + source.get(FIGHTER_NAME) + " to evade it!");
 			else
-				System.out.println(source.get("Fighter Name") + " easily evades the hit!");
+				System.out.println(source.get(FIGHTER_NAME) + " easily evades the hit!");
 			break;
 		case BLOCK_AND_ENDURE:
 		case EVADE_OR_ENDURE:
@@ -167,7 +169,7 @@ public class Commentator extends KombatLogger {
 			System.out.println("A Thorns Curse to weaken the enemy");
 			break;
 		default:
-			System.out.println("A " + event.get("Name") + " attempted by " + source.get("Fighter Name") + "!");
+			System.out.println("A " + event.get(NAME) + " attempted by " + source.get(FIGHTER_NAME) + "!");
 			break;
 		}
 		System.out.println();

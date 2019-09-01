@@ -3,6 +3,7 @@ package practice.premjit.patterns.kombatsim.moves.damages;
 import static practice.premjit.patterns.kombatsim.common.logging.SourcesAndEventsConstants.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import practice.premjit.patterns.kombatsim.beats.BeatObserver;
@@ -66,7 +67,7 @@ public class ShockDamage extends BaseDamage implements FlipFlopable, Cloneable {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(DURATION, Integer.toString(shockDuration))
 				.buildPartial();
 	}
@@ -89,9 +90,8 @@ public class ShockDamage extends BaseDamage implements FlipFlopable, Cloneable {
 	}
 	
 	private ActionStrategy shockedActionStrategy() {
-		return () -> {
-			if (!blocked) originalActionPerformer.perform();
-		};
+		return () -> Optional.ofNullable(blocked ? null : originalActionPerformer)
+						.ifPresent(ActionStrategy::perform);
 	}
 	
 	private ReactionStrategy shockedReactionStrategy() {

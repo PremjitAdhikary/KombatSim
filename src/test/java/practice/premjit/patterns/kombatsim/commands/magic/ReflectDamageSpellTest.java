@@ -3,6 +3,7 @@ package practice.premjit.patterns.kombatsim.commands.magic;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -44,7 +45,9 @@ class ReflectDamageSpellTest {
 	@BeforeEach
 	void init() {
 		KombatLogger.getLogger().disableLogging();
-		spell = new ReflectDamageSpell(mockMage, "test", book, 3, 5, "reflectTest");
+		spell = ReflectDamageSpell.create( reaction -> 
+			reaction.mage(mockMage).name("test").book(book).reflectMoveName("reflectTest")
+				.reflectMove(null).cooldown(3).activeDuration(5));
 	}
 	
 	@Test
@@ -128,13 +131,15 @@ class ReflectDamageSpellTest {
 		
 		@BeforeEach
 		void init() {
-			spell.reducePhysicalDamage(50);
 			moveFunction = mock(DoubleFunction.class);
-			spell.setMoveFunction(moveFunction);
+			spell = ReflectDamageSpell.create( reaction -> 
+				reaction.mage(mockMage).name("test").book(book).reflectMoveName("reflectTest")
+					.reflectMove(moveFunction).cooldown(3).activeDuration(5).reducePhysicalDamage(50));
 			spell.active.set();
 
 			life = AttributeUtility.buildLife(100);
 			when(mockMage.getAttribute(AttributeType.LIFE)).thenReturn(Optional.of(life));
+			lenient().when(mockMage.isAlive()).thenReturn(true);
 		}
 		
 		@Test
@@ -170,7 +175,7 @@ class ReflectDamageSpellTest {
 		@DisplayName("When react to Physical Damage with limit")
 		void testSpellReactionToPhysicalDamageWithLimit() {
 			PhysicalDamage damage = PhysicalDamage.create( d -> d.min(140).max(140) );
-			spell.setLimitDamage(30);
+			spell.limitDamage = 30;
 			spell.execute(Optional.of(damage));
 			assertEquals(70.0, life.current());
 			verify(moveFunction).apply(moveArgument.capture());
@@ -219,16 +224,16 @@ class ReflectDamageSpellTest {
 		
 		@BeforeEach
 		void init() {
-			spell.reducePhysicalDamage(50);
-			spell.reduceFireDamage(10);
-			spell.reduceColdDamage(5);
-			spell.reduceShockDamage(20);
 			moveFunction = mock(DoubleFunction.class);
-			spell.setMoveFunction(moveFunction);
+			spell = ReflectDamageSpell.create( reaction -> 
+			reaction.mage(mockMage).name("test").book(book).reflectMoveName("reflectTest")
+				.reflectMove(moveFunction).cooldown(3).activeDuration(5).reducePhysicalDamage(50)
+				.reduceFireDamage(10).reduceColdDamage(5).reduceShockDamage(20));
 			spell.active.set();
 
 			life = AttributeUtility.buildLife(100);
 			when(mockMage.getAttribute(AttributeType.LIFE)).thenReturn(Optional.of(life));
+			lenient().when(mockMage.isAlive()).thenReturn(true);
 		}
 		
 		@Test

@@ -24,7 +24,7 @@ public class Amateur extends AbstractFighter {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(STRENGTH, Double.toString(getAttribute(AttributeType.STRENGTH).map(Attribute::net).orElse(0.0)))
 				.with(DEXTERITY, Double.toString(getAttribute(AttributeType.DEXTERITY).map(Attribute::net).orElse(0.0)))
 				.build();

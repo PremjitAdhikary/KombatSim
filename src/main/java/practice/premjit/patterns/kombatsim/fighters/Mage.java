@@ -43,7 +43,7 @@ public class Mage extends AbstractFighter {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(MANA, Double.toString(maxMana()))
 				.with(CURRENT_MANA, Double.toString(currentMana()))
 				.build();

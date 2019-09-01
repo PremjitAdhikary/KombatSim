@@ -75,13 +75,12 @@ public class TikTok {
 	 * Otherwise, it will run till {@link #stop()} to be called. 
 	 */
 	public void start() {
-		for (; (cycles>0 && currentCycle<cycles) || (cycles==0); currentCycle++) {
+		for (; !interrupt && ( (cycles==0) || (cycles>0 && currentCycle<cycles) ); currentCycle++) {
 			logBeat("Tik");
 			tik.notifyObservers();
 			if (interrupt) break;
 			logBeat("Tok");
 			tok.notifyObservers();
-			if (interrupt) break;
 		}
 		this.interrupt = true;
 	}

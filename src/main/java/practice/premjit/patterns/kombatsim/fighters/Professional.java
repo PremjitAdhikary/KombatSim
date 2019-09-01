@@ -26,7 +26,7 @@ public class Professional extends AbstractFighter {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(STAMINA, Double.toString(getAttribute(AttributeType.STAMINA).map(Attribute::net).orElse(0.0)))
 				.with(CURRENT_STAMINA, Double.toString(getAttribute(AttributeType.STAMINA)
 						.map(a -> (VariableAttribute) a).map(VariableAttribute::current).orElse(0.0)))

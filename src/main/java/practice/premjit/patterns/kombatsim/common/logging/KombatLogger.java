@@ -109,7 +109,7 @@ public abstract class KombatLogger {
 			info.put(key, value);
 			return this;
 		}
-		public LogMapBuilder with(Map<String, String> infoMap) {
+		public LogMapBuilder withPartial(Map<String, String> infoMap) {
 			info.putAll(infoMap);
 			return this;
 		}

@@ -1,6 +1,9 @@
 package practice.premjit.patterns.kombatsim.common.logging;
 
 public final class SourcesAndEventsConstants {
+	
+	private SourcesAndEventsConstants() { }
+	
 	public static final String TYPE = "Type";
 	public static final String SOURCE = "Source";
 	public static final String EVENT = "Event";

@@ -4,6 +4,7 @@ import static practice.premjit.patterns.kombatsim.common.logging.SourcesAndEvent
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,9 @@ public class JsonLogger extends KombatLogger {
 	private void fileIt() {
 		String fileName = processDataForFileName();
 		String content = gson.toJson(data);
+		Path filePath = Paths.get(PATH);
 		try {
-			if (!Files.exists(Paths.get(PATH)))
+			if (!filePath.toFile().exists())
 			    Files.createDirectories(Paths.get(PATH));
 			Files.write(Paths.get(PATH+fileName + ".json"), content.getBytes());
 			System.out.println("Json at: " + (PATH + fileName + ".json"));

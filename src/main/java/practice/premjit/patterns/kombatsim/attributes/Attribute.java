@@ -1,5 +1,11 @@
 package practice.premjit.patterns.kombatsim.attributes;
 
+/**
+ * Attributes give personality to the fighters. Depending on type of attribute and amount of it, the way the 
+ * fighter fights changes.
+ * 
+ * @author Premjit Adhikary
+ */
 public class Attribute {
 	private AttributeType type;
 	private double base;

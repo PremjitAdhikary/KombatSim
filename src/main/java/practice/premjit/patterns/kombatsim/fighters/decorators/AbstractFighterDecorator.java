@@ -189,9 +189,11 @@ public abstract class AbstractFighterDecorator extends AbstractFighter {
 	}
 	
 	/**
-	 * Equip to enable the Fighter
+	 * Equip to enable the Fighter. <br>
+	 * Builder pattern to make sure that at creation of subclass this always gets called to lock down the 
+	 * decorator.
 	 */
-	public abstract void equip();
+	protected abstract void equip();
 
 	@Override
 	public void accept(FighterVisitor visitor) {

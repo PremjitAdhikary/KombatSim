@@ -11,6 +11,9 @@ public class PowerfulAndMystical {
 	static AbstractFighter champion;
 	static AbstractFighter challenger;
 	
+	static final String AGHORI = "Aghori";
+	static final String GANDALF = "Gandalf";
+	
 	private static void init(int choice) {
 		forest = new MysticalForest();
 		
@@ -28,32 +31,32 @@ public class PowerfulAndMystical {
 			challenger = FighterPool.equippedBatman(forest);
 			break;
 		case 4:
-			champion = FighterPool.elemental(forest, "Gandalf");
-			challenger = FighterPool.dark(forest, "Aghori");
+			champion = FighterPool.elemental(forest, GANDALF);
+			challenger = FighterPool.dark(forest, AGHORI);
 			break;
 		case 5:
 			champion = FighterPool.superman(forest);
-			challenger = FighterPool.elemental(forest, "Gandalf");
+			challenger = FighterPool.elemental(forest, GANDALF);
 			break;
 		case 6:
 			champion = FighterPool.superman(forest);
-			challenger = FighterPool.dark(forest, "Aghori");
+			challenger = FighterPool.dark(forest, AGHORI);
 			break;
 		case 7:
 			champion = FighterPool.flash(forest);
-			challenger = FighterPool.elemental(forest, "Gandalf");
+			challenger = FighterPool.elemental(forest, GANDALF);
 			break;
 		case 8:
 			champion = FighterPool.flash(forest);
-			challenger = FighterPool.dark(forest, "Aghori");
+			challenger = FighterPool.dark(forest, AGHORI);
 			break;
 		case 9:
 			champion = FighterPool.equippedBatman(forest);
-			challenger = FighterPool.elemental(forest, "Gandalf");
+			challenger = FighterPool.elemental(forest, GANDALF);
 			break;
 		case 10:
 			champion = FighterPool.equippedBatman(forest);
-			challenger = FighterPool.dark(forest, "Aghori");
+			challenger = FighterPool.dark(forest, AGHORI);
 			break;
 		}
 		forest.addFighter(champion);
@@ -77,8 +80,9 @@ public class PowerfulAndMystical {
 			if (choice>0 && choice<11) {
 				sc.close();
 				return choice;
-			} else
+			} else {
 				System.out.println("Press any from 1 to 10");
+			}
 		}
 	}
 	

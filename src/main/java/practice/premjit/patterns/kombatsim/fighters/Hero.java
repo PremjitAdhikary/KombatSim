@@ -26,7 +26,7 @@ public class Hero extends AbstractFighter {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(MOJO, Double.toString(getAttribute(AttributeType.MOJO).map(Attribute::net).orElse(0.0)))
 				.with(CURRENT_MOJO, Double.toString(getAttribute(AttributeType.MOJO)
 						.map(a -> (VariableAttribute) a).map(VariableAttribute::current).orElse(0.0)))

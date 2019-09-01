@@ -79,7 +79,7 @@ class MojoBasedActionTest {
 		void testSetMojoCost(int inputCost, boolean expected) {
 			mojo = AttributeUtility.buildMojo(100, 50);
 			when(mockFighter.getAttribute(AttributeType.MOJO)).thenReturn(Optional.of(mojo));
-			mojoAction.setMojoCost(inputCost);
+			mojoAction.mojoCost = inputCost;
 			assertEquals(expected, mojoAction.canBeExecuted());
 		}
 		
@@ -102,8 +102,8 @@ class MojoBasedActionTest {
 			when(mockFighter.getAttribute(AttributeType.MOJO)).thenReturn(Optional.of(mojo));
 			when(mockFighter.arena()).thenReturn(mockArena);
 			
-			mojoAction.setMojoCost(mojoCost);
-			mojoAction.setRecipient(recipient);
+			mojoAction.mojoCost = mojoCost;
+			mojoAction.recipient = recipient;
 			mojoAction.execute();
 			verify(mockArena).sendMove(moveArgument.capture(), eq(recipient), eq(mockFighter));
 			assertEquals(move, moveArgument.getValue());

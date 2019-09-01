@@ -45,7 +45,7 @@ public abstract class AbstractPhysicalReactionCommand implements ReactionCommand
 		try {
 			return KombatLogger.mapBuilder()
 					.withName(name)
-					.with(damage.mapify())
+					.withPartial(damage.mapify())
 					.build();
 		} catch (Exception e) {
 			return null;

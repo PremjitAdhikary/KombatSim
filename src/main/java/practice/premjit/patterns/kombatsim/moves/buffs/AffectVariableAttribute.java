@@ -60,7 +60,7 @@ public class AffectVariableAttribute extends Buff {
 	@Override
 	public Map<String, String> mapify() {
 		LogMapBuilder builder = KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(ATTRIBUTE, attributeType.name())
 				.with(AFFECT, affectType.name());
 		if (AffectType.TEMPORARY == affectType)

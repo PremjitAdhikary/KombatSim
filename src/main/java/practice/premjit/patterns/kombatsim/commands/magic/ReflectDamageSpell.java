@@ -3,6 +3,7 @@ package practice.premjit.patterns.kombatsim.commands.magic;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 
@@ -56,7 +57,7 @@ public class ReflectDamageSpell extends AbstractReactionSpell {
 	protected double limitDamage;
 	protected Map<String, Double> damageReduction;
 
-	public ReflectDamageSpell(Mage mage, String name, SpellBook book, int cooldownDuration, 
+	private ReflectDamageSpell(Mage mage, String name, SpellBook book, int cooldownDuration, 
 			int activeDuration, String reflectiveName) {
 		super(mage, name, book, cooldownDuration, activeDuration);
 		recipient = Recipient.OPPONENT;
@@ -90,7 +91,7 @@ public class ReflectDamageSpell extends AbstractReactionSpell {
 	}
 
 	private boolean damageReflectable() {
-		return !reduceDamage.indirectDamage && reduceDamage.reduced > 0 && moveFunction != null;
+		return mage.isAlive() && !reduceDamage.indirectDamage && reduceDamage.reduced > 0 && moveFunction != null;
 	}
 
 	private void reflectDamage() {
@@ -102,45 +103,17 @@ public class ReflectDamageSpell extends AbstractReactionSpell {
 			mage.arena().sendMove(reflect, recipient, mage);
 		}
 	}
-	
-	public void setMoveFunction(DoubleFunction<Move> moveFunction) {
-		this.moveFunction = moveFunction;
-	}
-
-	public void setRecipient(Recipient r) {
-		this.recipient = r;
-	}
-
-	public void setLimitDamage(double limitDamage) {
-		this.limitDamage = limitDamage;
-	}
 
 	@Override
 	protected void onActivate() {
 		// do nothing
 	}
 	
-	public void reducePhysicalDamage(double percentage) {
-		damageReduction.put(PhysicalDamage.TYPE, percentage);
-	}
-	
-	public void reduceFireDamage(double percentage) {
-		damageReduction.put(FireDamage.TYPE, percentage);
-	}
-	
-	public void reduceColdDamage(double percentage) {
-		damageReduction.put(ColdDamage.TYPE, percentage);
-	}
-	
-	public void reduceShockDamage(double percentage) {
-		damageReduction.put(ShockDamage.TYPE, percentage);
-	}
-	
 	public Map<String, String> mapify(Move move, String name) {
 		try {
 			return KombatLogger.mapBuilder()
 					.withName(name)
-					.with(((Loggable) move).mapify())
+					.withPartial(((Loggable) move).mapify())
 					.build();
 		} catch (Exception e) {
 			return null;
@@ -210,26 +183,22 @@ public class ReflectDamageSpell extends AbstractReactionSpell {
 
 		@Override
 		public void visit(Buff b) {
-			// do nothing
-			reduced = 0;
+			reduced = 0; // do nothing
 		}
 
 		@Override
 		public void visit(AffectAttribute aa) {
-			// do nothing
-			reduced = 0;
+			reduced = 0; // do nothing
 		}
 
 		@Override
 		public void visit(AffectVariableAttribute ave) {
-			// do nothing
-			reduced = 0;
+			reduced = 0; // do nothing
 		}
 
 		@Override
 		public void visit(AttributeSteal as) {
-			// do nothing
-			reduced = 0;
+			reduced = 0; // do nothing
 		}
 		
 		private boolean reduceBaseDamage(BaseDamage b, String type) {
@@ -251,6 +220,203 @@ public class ReflectDamageSpell extends AbstractReactionSpell {
 					b.incrementBy(-(b.amount()-damage));
 				}
 			});
+		}
+		
+	}
+	
+	// For Type safety Builder
+	
+	public static ReflectDamageSpell create(Consumer<ReflectDamageSpellMageBuilder> block) {
+		ReflectDamageSpellBuilder builder = new ReflectDamageSpellBuilder();
+		block.accept(builder);
+		return builder.build();
+	}
+	
+	public interface ReflectDamageSpellMageBuilder {
+		ReflectDamageSpellNameBuilder mage(Mage mage);
+	}
+	
+	public interface ReflectDamageSpellNameBuilder {
+		ReflectDamageSpellBookBuilder name(String name);
+	}
+	
+	public interface ReflectDamageSpellBookBuilder {
+		ReflectDamageSpellMoveNameBuilder book(SpellBook book);
+	}
+	
+	public interface ReflectDamageSpellMoveNameBuilder {
+		ReflectDamageSpellMoveBuilder reflectMoveName(String name);
+	}
+	
+	public interface ReflectDamageSpellMoveBuilder {
+		ReflectDamageSpellCooldownBuilder reflectMove(DoubleFunction<Move> move);
+	}
+	
+	public interface ReflectDamageSpellCooldownBuilder {
+		ReflectDamageSpellActiveBuilder cooldown(int cooldown);
+	}
+	
+	public interface ReflectDamageSpellActiveBuilder {
+		ReflectDamageSpellOptionalBuilder activeDuration(int duration);
+	}
+	
+	public interface ReflectDamageSpellOptionalBuilder {
+		ReflectDamageSpellOptionalBuilder affect(Recipient r);
+		ReflectDamageSpellOptionalBuilder manaCost(double cost);
+		ReflectDamageSpellOptionalBuilder limitDamage(double limit);
+		ReflectDamageSpellOptionalBuilder reducePhysicalDamage(double reduction);
+		ReflectDamageSpellOptionalBuilder reduceFireDamage(double reduction);
+		ReflectDamageSpellOptionalBuilder reduceColdDamage(double reduction);
+		ReflectDamageSpellOptionalBuilder reduceShockDamage(double reduction);
+	}
+	
+	public static class ReflectDamageSpellBuilder implements ReflectDamageSpellMageBuilder, 
+			ReflectDamageSpellNameBuilder, ReflectDamageSpellBookBuilder, ReflectDamageSpellMoveNameBuilder, 
+			ReflectDamageSpellMoveBuilder, ReflectDamageSpellCooldownBuilder, ReflectDamageSpellActiveBuilder, 
+			ReflectDamageSpellOptionalBuilder {
+		private Mage fighter;
+		private String name;
+		private SpellBook book;
+		private DoubleFunction<Move> moveFunction;
+		private int cooldownDuration;
+		private String reflectiveName;
+		
+		private ReflectDamageSpell spell;
+		
+		private ReflectDamageSpellBuilder() { }
+
+		@Override
+		public ReflectDamageSpellNameBuilder mage(Mage mage) {
+			this.fighter = mage;
+			return this;
+		}
+
+		@Override
+		public ReflectDamageSpellBookBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		@Override
+		public ReflectDamageSpellMoveNameBuilder book(SpellBook book) {
+			this.book = book;
+			return this;
+		}
+
+		@Override
+		public ReflectDamageSpellMoveBuilder reflectMoveName(String name) {
+			this.reflectiveName = name;
+			return this;
+		}
+
+		@Override
+		public ReflectDamageSpellCooldownBuilder reflectMove(DoubleFunction<Move> move) {
+			this.moveFunction = move;
+			return this;
+		}
+
+		@Override
+		public ReflectDamageSpellActiveBuilder cooldown(int cooldown) {
+			this.cooldownDuration = cooldown;
+			return this;
+		}
+
+		@Override
+		public ReflectDamageSpellOptionalBuilder activeDuration(int duration) {
+			this.spell = new ReflectDamageSpell(this.fighter, this.name, this.book, 
+					this.cooldownDuration, duration, this.reflectiveName);
+			this.spell.moveFunction = this.moveFunction;
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default Recipient.OPPONENT
+		 * 
+		 * @param r
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder affect(Recipient r) {
+			this.spell.recipient = r;
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 1
+		 * 
+		 * @param cost
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder manaCost(double cost) {
+			this.spell.manaCost = cost;
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 0
+		 * 
+		 * @param cost
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder limitDamage(double limit) {
+			this.spell.limitDamage = limit;
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 0 (no reduction)
+		 * 
+		 * @param reduction
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder reducePhysicalDamage(double reduction) {
+			this.spell.damageReduction.put(PhysicalDamage.TYPE, reduction);
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 0 (no reduction)
+		 * 
+		 * @param reduction
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder reduceFireDamage(double reduction) {
+			this.spell.damageReduction.put(FireDamage.TYPE, reduction);
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 0 (no reduction)
+		 * 
+		 * @param reduction
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder reduceColdDamage(double reduction) {
+			this.spell.damageReduction.put(ColdDamage.TYPE, reduction);
+			return this;
+		}
+		
+		/**
+		 * Optional. By Default 0 (no reduction)
+		 * 
+		 * @param reduction
+		 * @return
+		 */
+		@Override
+		public ReflectDamageSpellOptionalBuilder reduceShockDamage(double reduction) {
+			this.spell.damageReduction.put(ShockDamage.TYPE, reduction);
+			return this;
+		}
+		
+		private ReflectDamageSpell build() {
+			if (spell == null)
+				throw new IllegalArgumentException("Required properties are not set");
+			return spell;
 		}
 		
 	}

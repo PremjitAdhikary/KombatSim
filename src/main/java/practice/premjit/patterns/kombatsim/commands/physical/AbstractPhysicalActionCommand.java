@@ -55,7 +55,7 @@ public abstract class AbstractPhysicalActionCommand implements ActionCommand, Id
 		try {
 			return KombatLogger.mapBuilder()
 					.withName(name)
-					.with(damage.mapify())
+					.withPartial(damage.mapify())
 					.build();
 		} catch (Exception e) {
 			return null;

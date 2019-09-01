@@ -95,8 +95,7 @@ class AffectVariableAttributeTest {
 		}
 		
 		@Test
-		void permanent() throws 
-			NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		void permanent() throws NoSuchFieldException, IllegalAccessException {
 			affectVariableAttribute = AffectVariableAttribute.create(b -> b
 					.affectAttribute(AttributeType.MOJO)
 					.permanent()
@@ -119,8 +118,7 @@ class AffectVariableAttributeTest {
 		}
 		
 		@Test
-		void temporary() throws 
-			NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		void temporary() throws NoSuchFieldException, IllegalAccessException {
 			affectVariableAttribute = AffectVariableAttribute.create(b -> b
 					.affectAttribute(AttributeType.MOJO)
 					.duration(4)

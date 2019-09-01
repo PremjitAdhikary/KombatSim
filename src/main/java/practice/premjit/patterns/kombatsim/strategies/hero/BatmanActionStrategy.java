@@ -37,7 +37,10 @@ import practice.premjit.patterns.kombatsim.visitors.MoveVisitor;
  * Now every opponent has his own weakness. So choose the right projectile, Batman first identifies his opponent. This 
  * is done by executing an initial Move {@link Tracer}, which uses visitor pattern ({@link TracerVisitor}) to determine 
  * the most effective projectiles against the opponent. Once we have short listed the projectiles, one of them is 
- * selected at random and its {@link ActionCommand command} executed.
+ * selected at random and its {@link ActionCommand command} executed. <br><br>
+ * 
+ * Along with that at fatal situations this Strategy also acts as a defensive way where instead of attacking, Batman 
+ * goes ahead and heals himself.
  * 
  * @author Premjit Adhikary
  *
@@ -64,6 +67,9 @@ public class BatmanActionStrategy extends AbstractFighterActionStrategy {
 	protected Optional<ActionCommand> selectAction() {
 		if (!equipped)
 			return getAction(AllActions.KICK);
+		
+		if (fighter.currentLife() < fighter.maxLife() * 0.1) 
+			return getAction(AllActions.HEAL_PILL);
 		
 		if (timeToWeakenOpponent()) {
 			EnumSet<AllActions> weakeners = getWeakener();

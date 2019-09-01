@@ -69,7 +69,7 @@ public class ColdDamage extends BaseDamage implements FlipFlopable, Cloneable {
 	@Override
 	public Map<String, String> mapify() {
 		return KombatLogger.mapBuilder()
-				.with(super.mapify())
+				.withPartial(super.mapify())
 				.with(DURATION, Integer.toString(coldDuration))
 				.with(DETERIORATION_PERCENTAGE, Double.toString(deteriorationPercentage))
 				.buildPartial();
