@@ -1,0 +1,135 @@
+body, html, #container {
+	height: 97vh;
+  color: darkgray;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#container {
+  margin: 0;
+  display: grid;
+	grid-template-columns: auto 85%;
+	grid-template-rows: 10% auto 5%;
+	grid-template-areas:
+		"header  header"
+		"sidebar main"
+		"sidebar footer";
+}
+
+.header {
+	grid-area: header;
+  background-color: black;
+  font-size: 2.5em;
+  font-variant: small-caps;
+  padding-left: 1%;
+  /* this is to disable the inner padding to push out the outer container */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#side {
+	grid-area: sidebar;
+  background-color: black;
+  padding-left: 5%;
+  padding-top: 5%;
+  /* this is to disable the inner padding to push out the outer container */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.main {
+	width: 100%;
+	height: 100%;
+	grid-area: main;
+	justify-self: center;
+  align-self: center;
+  overflow: auto;
+  padding: 2%;
+  /* this is to disable the inner padding to push out the outer container */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.footer {
+	grid-area: footer;
+  background-color: black;
+}
+
+a:link, a:visited {
+  color: darkgray;
+}
+
+a:hover,a:active {
+  color: lightgrey;
+}
+
+.pageTitle {
+  font-size: 2em;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+}
+
+.pageTitle, .sectionTitle {
+  font-style: italic;
+  font-weight: bold;
+  font-variant: small-caps;
+  color: black;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+}
+
+.center {
+  text-align: center
+}
+
+/* transitions */
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
+}
+
+/* all buttons */
+.btn {
+  background-color: black;
+}
+
+.btn-disabled {
+  background-color: lightgray;
+}
+
+.btn, .btn-disabled {
+  display: inline-block;
+  font-weight: bold;
+  color: darkgray;
+  width: auto;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 5px;
+  margin: 3px;
+  padding: 5px 10px 5px 10px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  color: lightgray;
+}
+
+.btn-disabled:hover {
+  cursor: default;
+}

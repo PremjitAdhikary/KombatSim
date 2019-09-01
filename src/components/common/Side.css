@@ -1,0 +1,39 @@
+#side > div {
+  display: block;
+}
+
+#side > div > input + label {
+  cursor: pointer;
+  display: block;
+}
+
+#side > div > input + label:hover {
+  cursor: pointer;
+  display: block;
+  color:lightgrey;
+}
+
+/* #side > div > input ~ div {
+  visibility: hidden;
+  display: none;
+  opacity: 0;
+}
+
+#side > div > input:checked ~ div {
+  visibility: visible;
+  display: block;
+  opacity: 1;
+} */
+
+#side > div > input:checked + label {
+  cursor: pointer;
+  display: block;
+  color:lightgrey;
+  font-weight: bold;
+}
+
+.subLinks {
+  visibility: visible;
+  display: block;
+  opacity: 1;
+}
