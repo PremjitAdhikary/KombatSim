@@ -13,18 +13,6 @@
   color:lightgrey;
 }
 
-/* #side > div > input ~ div {
-  visibility: hidden;
-  display: none;
-  opacity: 0;
-}
-
-#side > div > input:checked ~ div {
-  visibility: visible;
-  display: block;
-  opacity: 1;
-} */
-
 #side > div > input:checked + label {
   cursor: pointer;
   display: block;
