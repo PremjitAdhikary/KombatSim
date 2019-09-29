@@ -1,7 +1,8 @@
 package practice.premjit.patterns.kombatsim.common;
 
 /**
- * Implement this to set and reset on the cue of {@link practice.premjit.patterns.kombatsim.beats.FlipFlopObserver 
+ * Implement this to set and reset on the cue of
+ * {@link practice.premjit.patterns.kombatsim.beats.FlipFlopObserver
  * FlipFlopObserver}
  * 
  * @author Premjit Adhikary
@@ -9,8 +10,8 @@ package practice.premjit.patterns.kombatsim.common;
  */
 public interface FlipFlopable {
 
-	void set();
-	
-	void reset();
-	
+    void set();
+    
+    void reset();
+    
 }

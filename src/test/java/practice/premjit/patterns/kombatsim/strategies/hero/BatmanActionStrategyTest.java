@@ -22,64 +22,64 @@ import practice.premjit.patterns.kombatsim.fighters.Hero;
 
 @ExtendWith(MockitoExtension.class)
 class BatmanActionStrategyTest {
-	@Mock Hero batman;
-	BatmanActionStrategy strategy;
-	Punch punch;
-	Kick kick;
-	@Mock AbstractPhysicalActionCommand mockAction;
-	
-	@BeforeEach
-	void init() {
-		KombatLogger.getLogger().disableLogging();
-	}
-	
-	@Nested
-	@DisplayName("when batman not equipped")
-	class WhenVanillaBatman {
-		
-		@BeforeEach
-		void init() {
-			strategy = new BatmanActionStrategy(batman, false);
-			when(mockAction.name()).thenReturn(AllActions.KICK.value());
-			when(batman.allActions()).thenReturn(Arrays.asList(mockAction));
-		}
-		
-		@Test
-		void testSelectAction() {
-			assertEquals(mockAction, strategy.selectAction().get());
-		}
-		
-		@Test
-		void testPerform() {
-			strategy.perform();
-			verify(mockAction).execute();
-		}
-		
-	}
-	
-	@Nested
-	@DisplayName("when batman equipped")
-	class WhenEquippedBatman {
-		
-		@BeforeEach
-		void init() {
-			strategy = new BatmanActionStrategy(batman, true);
-			strategy.actionCount = 1;
-			when(mockAction.name()).thenReturn(AllActions.PUNCH.value());
-			when(batman.allActions()).thenReturn(Arrays.asList(mockAction));
-		}
-		
-		@Test
-		void testSelectAction() {
-			assertEquals(mockAction, strategy.selectAction().get());
-		}
-		
-		@Test
-		void testPerform() {
-			strategy.perform();
-			verify(mockAction).execute();
-		}
-		
-	}
+    @Mock Hero batman;
+    BatmanActionStrategy strategy;
+    Punch punch;
+    Kick kick;
+    @Mock AbstractPhysicalActionCommand mockAction;
+    
+    @BeforeEach
+    void init() {
+        KombatLogger.getLogger().disableLogging();
+    }
+    
+    @Nested
+    @DisplayName("when batman not equipped")
+    class WhenVanillaBatman {
+        
+        @BeforeEach
+        void init() {
+            strategy = new BatmanActionStrategy(batman, false);
+            when(mockAction.name()).thenReturn(AllActions.KICK.value());
+            when(batman.allActions()).thenReturn(Arrays.asList(mockAction));
+        }
+        
+        @Test
+        void testSelectAction() {
+            assertEquals(mockAction, strategy.selectAction().get());
+        }
+        
+        @Test
+        void testPerform() {
+            strategy.perform();
+            verify(mockAction).execute();
+        }
+        
+    }
+    
+    @Nested
+    @DisplayName("when batman equipped")
+    class WhenEquippedBatman {
+        
+        @BeforeEach
+        void init() {
+            strategy = new BatmanActionStrategy(batman, true);
+            strategy.actionCount = 1;
+            when(mockAction.name()).thenReturn(AllActions.PUNCH.value());
+            when(batman.allActions()).thenReturn(Arrays.asList(mockAction));
+        }
+        
+        @Test
+        void testSelectAction() {
+            assertEquals(mockAction, strategy.selectAction().get());
+        }
+        
+        @Test
+        void testPerform() {
+            strategy.perform();
+            verify(mockAction).execute();
+        }
+        
+    }
 
 }

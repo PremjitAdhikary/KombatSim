@@ -13,20 +13,20 @@ import practice.premjit.patterns.kombatsim.moves.Move;
  *
  */
 public abstract class AbstractFighterReactionStrategy implements ReactionStrategy {
-	protected AbstractFighter fighter;
-	
-	public AbstractFighterReactionStrategy(AbstractFighter fighter) {
-		this.fighter = fighter;
-	}
+    protected AbstractFighter fighter;
+    
+    public AbstractFighterReactionStrategy(AbstractFighter fighter) {
+        this.fighter = fighter;
+    }
 
-	@Override
-	public boolean perform(Optional<Move> move) {
-		Optional<ReactionCommand> reaction = selectReaction(move);
-		return execute(reaction, move);
-	}
-	
-	protected abstract Optional<ReactionCommand> selectReaction(Optional<Move> move);
-	
-	protected abstract boolean execute(Optional<ReactionCommand> reaction, Optional<Move> move);
+    @Override
+    public boolean perform(Optional<Move> move) {
+        Optional<ReactionCommand> reaction = selectReaction(move);
+        return execute(reaction, move);
+    }
+    
+    protected abstract Optional<ReactionCommand> selectReaction(Optional<Move> move);
+    
+    protected abstract boolean execute(Optional<ReactionCommand> reaction, Optional<Move> move);
 
 }

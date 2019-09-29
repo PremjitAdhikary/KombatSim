@@ -12,20 +12,20 @@ import practice.premjit.patterns.kombatsim.fighters.AbstractFighter;
  *
  */
 public abstract class AbstractFighterActionStrategy implements ActionStrategy {
-	protected AbstractFighter fighter;
+    protected AbstractFighter fighter;
 
-	public AbstractFighterActionStrategy(AbstractFighter fighter) {
-		this.fighter = fighter;
-	}
-	
-	@Override
-	public void perform() {
-		Optional<ActionCommand> action = selectAction();
-		execute(action);
-	}
-	
-	protected abstract Optional<ActionCommand> selectAction();
-	
-	protected abstract void execute(Optional<ActionCommand> action);
+    public AbstractFighterActionStrategy(AbstractFighter fighter) {
+        this.fighter = fighter;
+    }
+    
+    @Override
+    public void perform() {
+        Optional<ActionCommand> action = selectAction();
+        execute(action);
+    }
+    
+    protected abstract Optional<ActionCommand> selectAction();
+    
+    protected abstract void execute(Optional<ActionCommand> action);
 
 }

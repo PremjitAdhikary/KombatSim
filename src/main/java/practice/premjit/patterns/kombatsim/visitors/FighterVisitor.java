@@ -7,15 +7,15 @@ import practice.premjit.patterns.kombatsim.fighters.Mage;
 import practice.premjit.patterns.kombatsim.fighters.Professional;
 
 public interface FighterVisitor {
-	
-	void visit(AbstractFighter a);
-	
-	void visit(Amateur a);
-	
-	void visit(Professional p);
-	
-	void visit(Hero h);
-	
-	void visit(Mage m);
+    
+    void visit(AbstractFighter a);
+    
+    void visit(Amateur a);
+    
+    void visit(Professional p);
+    
+    void visit(Hero h);
+    
+    void visit(Mage m);
 
 }

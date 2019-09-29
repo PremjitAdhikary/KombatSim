@@ -16,40 +16,40 @@ import practice.premjit.patterns.kombatsim.moves.damages.PhysicalDamage;
  *
  */
 public abstract class AbstractPhysicalReactionCommand implements ReactionCommand {
-	protected AbstractFighter fighter;
-	protected String name;
-	
-	public AbstractPhysicalReactionCommand(AbstractFighter fighter) {
-		this.fighter = fighter;
-	}
+    protected AbstractFighter fighter;
+    protected String name;
+    
+    public AbstractPhysicalReactionCommand(AbstractFighter fighter) {
+        this.fighter = fighter;
+    }
 
-	@Override
-	public boolean canBeExecuted(Optional<Move> move) {
-		return move.isPresent() && move.get() instanceof PhysicalDamage;
-	}
+    @Override
+    public boolean canBeExecuted(Optional<Move> move) {
+        return move.isPresent() && move.get() instanceof PhysicalDamage;
+    }
 
-	@Override
-	public void execute(Optional<Move> move) {
-		if (!move.isPresent())
-			return;
-		reduceDamage((PhysicalDamage) move.get());
-		move.get().affect(fighter);
-		KombatLogger.getLogger().log(
-				KombatLogger.LEVEL.HIGH, KombatLogger.EVENT_TYPE.REACTION, 
-				fighter.mapify(), mapify((PhysicalDamage) move.get()));
-	}
-	
-	public abstract void reduceDamage(PhysicalDamage physicalDamage);
-	
-	public Map<String, String> mapify(PhysicalDamage damage) {
-		try {
-			return KombatLogger.mapBuilder()
-					.withName(name)
-					.withPartial(damage.mapify())
-					.build();
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    @Override
+    public void execute(Optional<Move> move) {
+        if (!move.isPresent())
+            return;
+        reduceDamage((PhysicalDamage) move.get());
+        move.get().affect(fighter);
+        KombatLogger.getLogger().log(
+                KombatLogger.LEVEL.HIGH, KombatLogger.EVENT_TYPE.REACTION, 
+                fighter.mapify(), mapify((PhysicalDamage) move.get()));
+    }
+    
+    public abstract void reduceDamage(PhysicalDamage physicalDamage);
+    
+    public Map<String, String> mapify(PhysicalDamage damage) {
+        try {
+            return KombatLogger.mapBuilder()
+                    .withName(name)
+                    .withPartial(damage.mapify())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

@@ -25,113 +25,113 @@ import practice.premjit.patterns.kombatsim.visitors.MoveVisitor;
  *
  */
 public class AffectVariableAttribute extends Buff {
-	static final String TYPE_PERMANENT = "Affect Variable Attribute";
-	static final String TYPE_TEMPORARY = "Affect Variable Attribute Over Time";
-	protected AttributeType attributeType;
-	protected AffectType affectType;
-	protected int duration;
-	protected double percentagePerBeat;
-	
-	private AffectVariableAttribute(AttributeType attributeType, AffectType affectType) {
-		this.attributeType = attributeType;
-		this.affectType = affectType;
-		buffType = (affectType == AffectType.TEMPORARY ? TYPE_TEMPORARY : TYPE_PERMANENT);
-	}
+    static final String TYPE_PERMANENT = "Affect Variable Attribute";
+    static final String TYPE_TEMPORARY = "Affect Variable Attribute Over Time";
+    protected AttributeType attributeType;
+    protected AffectType affectType;
+    protected int duration;
+    protected double percentagePerBeat;
+    
+    private AffectVariableAttribute(AttributeType attributeType, AffectType affectType) {
+        this.attributeType = attributeType;
+        this.affectType = affectType;
+        buffType = (affectType == AffectType.TEMPORARY ? TYPE_TEMPORARY : TYPE_PERMANENT);
+    }
 
-	@Override
-	public void affect(AbstractFighter fighter) {
-		if (!fighter.getAttribute(attributeType).isPresent()) 
-			return;
-		
-		double amountPerBeat = fighter.getAttribute(attributeType).get().base() * percentagePerBeat / 100;
-		
-		VariableAttributeModifier vam = affectType == AffectType.TEMPORARY ? 
-				new VariableAttributeModifier(fighter, attributeType, amountPerBeat, duration) : 
-					new VariableAttributeModifier(fighter, attributeType, amountPerBeat) ;
-		
-		fighter.registerObserver(vam);
-	}
+    @Override
+    public void affect(AbstractFighter fighter) {
+        if (!fighter.getAttribute(attributeType).isPresent()) 
+            return;
+        
+        double amountPerBeat = fighter.getAttribute(attributeType).get().base() * percentagePerBeat / 100;
+        
+        VariableAttributeModifier vam = affectType == AffectType.TEMPORARY ? 
+                new VariableAttributeModifier(fighter, attributeType, amountPerBeat, duration) : 
+                    new VariableAttributeModifier(fighter, attributeType, amountPerBeat) ;
+        
+        fighter.registerObserver(vam);
+    }
 
-	@Override
-	public void accept(MoveVisitor visitor) {
-		visitor.visit(this);
-	}
+    @Override
+    public void accept(MoveVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	@Override
-	public Map<String, String> mapify() {
-		LogMapBuilder builder = KombatLogger.mapBuilder()
-				.withPartial(super.mapify())
-				.with(ATTRIBUTE, attributeType.name())
-				.with(AFFECT, affectType.name());
-		if (AffectType.TEMPORARY == affectType)
-			builder.with(DURATION, String.valueOf(duration));
-		return builder
-				.with(PERCENTAGE_BEAT, String.valueOf(percentagePerBeat))
-				.buildPartial();
-	}
-	
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-	
-	// For the type safety builder
-	
-	public static AffectVariableAttribute create(Consumer<VariableAttributeTypeBuilder> block) {
-		AffectVariableAttributeBuilder builder = new AffectVariableAttributeBuilder();
-		block.accept(builder);
-		return builder.build();
-	}
-	
-	public static interface VariableAttributeTypeBuilder {
-		DurationBuilder affectAttribute(AttributeType type);
-	}
-	
-	public static interface DurationBuilder {
-		FinalAffectVariableAttributeBuilder permanent();
-		FinalAffectVariableAttributeBuilder duration(int d);
-	}
-	
-	public static interface FinalAffectVariableAttributeBuilder {
-		FinalAffectVariableAttributeBuilder percentagePerBeat(double p);
-	}
-	
-	public static class AffectVariableAttributeBuilder 
-			implements VariableAttributeTypeBuilder, DurationBuilder, FinalAffectVariableAttributeBuilder {
-		AttributeType type;
-		AffectVariableAttribute ava;
-		
-		private AffectVariableAttributeBuilder() { }
+    @Override
+    public Map<String, String> mapify() {
+        LogMapBuilder builder = KombatLogger.mapBuilder()
+                .withPartial(super.mapify())
+                .with(ATTRIBUTE, attributeType.name())
+                .with(AFFECT, affectType.name());
+        if (AffectType.TEMPORARY == affectType)
+            builder.with(DURATION, String.valueOf(duration));
+        return builder
+                .with(PERCENTAGE_BEAT, String.valueOf(percentagePerBeat))
+                .buildPartial();
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+    
+    // For the type safety builder
+    
+    public static AffectVariableAttribute create(Consumer<VariableAttributeTypeBuilder> block) {
+        AffectVariableAttributeBuilder builder = new AffectVariableAttributeBuilder();
+        block.accept(builder);
+        return builder.build();
+    }
+    
+    public static interface VariableAttributeTypeBuilder {
+        DurationBuilder affectAttribute(AttributeType type);
+    }
+    
+    public static interface DurationBuilder {
+        FinalAffectVariableAttributeBuilder permanent();
+        FinalAffectVariableAttributeBuilder duration(int d);
+    }
+    
+    public static interface FinalAffectVariableAttributeBuilder {
+        FinalAffectVariableAttributeBuilder percentagePerBeat(double p);
+    }
+    
+    public static class AffectVariableAttributeBuilder 
+            implements VariableAttributeTypeBuilder, DurationBuilder, FinalAffectVariableAttributeBuilder {
+        AttributeType type;
+        AffectVariableAttribute ava;
+        
+        private AffectVariableAttributeBuilder() { }
 
-		@Override
-		public DurationBuilder affectAttribute(AttributeType type) {
-			this.type = type;
-			return this;
-		}
+        @Override
+        public DurationBuilder affectAttribute(AttributeType type) {
+            this.type = type;
+            return this;
+        }
 
-		@Override
-		public FinalAffectVariableAttributeBuilder permanent() {
-			ava = new AffectVariableAttribute(type, AffectType.PERMANENT);
-			return this;
-		}
+        @Override
+        public FinalAffectVariableAttributeBuilder permanent() {
+            ava = new AffectVariableAttribute(type, AffectType.PERMANENT);
+            return this;
+        }
 
-		@Override
-		public FinalAffectVariableAttributeBuilder duration(int d) {
-			ava = new AffectVariableAttribute(type, AffectType.TEMPORARY);
-			ava.duration = d;
-			return this;
-		}
+        @Override
+        public FinalAffectVariableAttributeBuilder duration(int d) {
+            ava = new AffectVariableAttribute(type, AffectType.TEMPORARY);
+            ava.duration = d;
+            return this;
+        }
 
-		@Override
-		public FinalAffectVariableAttributeBuilder percentagePerBeat(double p) {
-			ava.percentagePerBeat = p;
-			return this;
-		}
-		
-		private AffectVariableAttribute build() {
-			return ava;
-		}
-		
-	}
+        @Override
+        public FinalAffectVariableAttributeBuilder percentagePerBeat(double p) {
+            ava.percentagePerBeat = p;
+            return this;
+        }
+        
+        private AffectVariableAttribute build() {
+            return ava;
+        }
+        
+    }
 
 }

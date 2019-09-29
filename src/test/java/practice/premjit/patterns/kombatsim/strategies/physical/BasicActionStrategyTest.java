@@ -26,59 +26,59 @@ import practice.premjit.patterns.kombatsim.fighters.AbstractFighter;
 
 @ExtendWith(MockitoExtension.class)
 class BasicActionStrategyTest {
-	@Mock AbstractFighter mockFighter;
-	BasicActionStrategy strategy;
-	
-	@BeforeEach
-	void init() {
-		KombatLogger.getLogger().disableLogging();
-		strategy = new BasicActionStrategy(mockFighter);
-	}
+    @Mock AbstractFighter mockFighter;
+    BasicActionStrategy strategy;
+    
+    @BeforeEach
+    void init() {
+        KombatLogger.getLogger().disableLogging();
+        strategy = new BasicActionStrategy(mockFighter);
+    }
 
-	@Test
-	void testExecuteAction() {
-		strategy.execute(Optional.empty());
-	}
-	
-	@Test
-	void testSelectActionWhenNoActions() {
-		List<ActionCommand> actions = new ArrayList<>();
-		when(mockFighter.allActions()).thenReturn(actions);
-		assertFalse(strategy.selectAction().isPresent());
-	}
-	
-	@TestInstance(Lifecycle.PER_CLASS)
-	@Nested
-	@DisplayName("test with actions")
-	class WhenActions {
-		ActionCommand mockAction;
-		
-		@BeforeEach
-		void init() {
-			mockAction = mock(ActionCommand.class);
-			List<ActionCommand> actions = new ArrayList<>();
-			actions.add(mockAction);
-			when(mockFighter.allActions()).thenReturn(actions);
-		}
-		
-		@Test
-		void testSelectActionWhenHasNoExecutableAction() {
-			assertFalse(strategy.selectAction().isPresent());
-		}
-		
-		@Test
-		void testSelectActionWhenHasExecutableAction() {
-			when(mockAction.canBeExecuted()).thenReturn(true);
-			assertEquals(mockAction, strategy.selectAction().get());
-		}
-		
-		@Test
-		void testPerform() {
-			when(mockAction.canBeExecuted()).thenReturn(true);
-			strategy.perform();
-			verify(mockAction).execute();
-		}
-		
-	}
+    @Test
+    void testExecuteAction() {
+        strategy.execute(Optional.empty());
+    }
+    
+    @Test
+    void testSelectActionWhenNoActions() {
+        List<ActionCommand> actions = new ArrayList<>();
+        when(mockFighter.allActions()).thenReturn(actions);
+        assertFalse(strategy.selectAction().isPresent());
+    }
+    
+    @TestInstance(Lifecycle.PER_CLASS)
+    @Nested
+    @DisplayName("test with actions")
+    class WhenActions {
+        ActionCommand mockAction;
+        
+        @BeforeEach
+        void init() {
+            mockAction = mock(ActionCommand.class);
+            List<ActionCommand> actions = new ArrayList<>();
+            actions.add(mockAction);
+            when(mockFighter.allActions()).thenReturn(actions);
+        }
+        
+        @Test
+        void testSelectActionWhenHasNoExecutableAction() {
+            assertFalse(strategy.selectAction().isPresent());
+        }
+        
+        @Test
+        void testSelectActionWhenHasExecutableAction() {
+            when(mockAction.canBeExecuted()).thenReturn(true);
+            assertEquals(mockAction, strategy.selectAction().get());
+        }
+        
+        @Test
+        void testPerform() {
+            when(mockAction.canBeExecuted()).thenReturn(true);
+            strategy.perform();
+            verify(mockAction).execute();
+        }
+        
+    }
 
 }

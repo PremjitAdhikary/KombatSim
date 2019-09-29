@@ -5,9 +5,9 @@ import java.util.Optional;
 import practice.premjit.patterns.kombatsim.moves.Move;
 
 public interface ReactionCommand {
-	
-	boolean canBeExecuted(Optional<Move> move);
-	
-	void execute(Optional<Move> move);
+    
+    boolean canBeExecuted(Optional<Move> move);
+    
+    void execute(Optional<Move> move);
 
 }

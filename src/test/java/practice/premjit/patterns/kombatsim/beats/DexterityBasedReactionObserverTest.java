@@ -24,60 +24,60 @@ import practice.premjit.patterns.kombatsim.fighters.AbstractFighter;
 
 @ExtendWith(MockitoExtension.class)
 class DexterityBasedReactionObserverTest {
-	AbstractFighter mockFighter;
-	DexterityBasedReactionObserver dbro;
-	
-	@BeforeEach
-	void init() {
-		KombatLogger.getLogger().disableLogging();
-		mockFighter = mock(AbstractFighter.class);
-		dbro = new DexterityBasedReactionObserver();
-		dbro.setFighter(mockFighter);
-	}
+    AbstractFighter mockFighter;
+    DexterityBasedReactionObserver dbro;
+    
+    @BeforeEach
+    void init() {
+        KombatLogger.getLogger().disableLogging();
+        mockFighter = mock(AbstractFighter.class);
+        dbro = new DexterityBasedReactionObserver();
+        dbro.setFighter(mockFighter);
+    }
 
-	@ParameterizedTest
-	@MethodSource("provideArgumentsForTestCountFromDexterity")
-	void testCountFromDexterity(int input, int expected) {
-		when(mockFighter.getAttribute(AttributeType.DEXTERITY))
-			.thenReturn(Optional.of(AttributeUtility.buildDexterity(input)));
-		assertEquals(expected, dbro.calculateBeatCount());
-	}
-	
-	static Stream<Arguments> provideArgumentsForTestCountFromDexterity() {
-		return Stream.of(
-				Arguments.of(0, 1000),
-				Arguments.of(1, 100),
-				Arguments.of(9, 100),
-				Arguments.of(10,100),
-				Arguments.of(11,100),
-				Arguments.of(40, 25),
-				Arguments.of(75, 14),
-				Arguments.of(85, 12),
-				Arguments.of(150, 8),
-				Arguments.of(250, 6),
-				Arguments.of(450, 4),
-				Arguments.of(550, 4),
-				Arguments.of(600, 3),
-				Arguments.of(1000, 1),
-				Arguments.of(1001, 1)
-			);
-	}
+    @ParameterizedTest
+    @MethodSource("provideArgumentsForTestCountFromDexterity")
+    void testCountFromDexterity(int input, int expected) {
+        when(mockFighter.getAttribute(AttributeType.DEXTERITY))
+            .thenReturn(Optional.of(AttributeUtility.buildDexterity(input)));
+        assertEquals(expected, dbro.calculateBeatCount());
+    }
+    
+    static Stream<Arguments> provideArgumentsForTestCountFromDexterity() {
+        return Stream.of(
+                Arguments.of(0, 1000),
+                Arguments.of(1, 100),
+                Arguments.of(9, 100),
+                Arguments.of(10,100),
+                Arguments.of(11,100),
+                Arguments.of(40, 25),
+                Arguments.of(75, 14),
+                Arguments.of(85, 12),
+                Arguments.of(150, 8),
+                Arguments.of(250, 6),
+                Arguments.of(450, 4),
+                Arguments.of(550, 4),
+                Arguments.of(600, 3),
+                Arguments.of(1000, 1),
+                Arguments.of(1001, 1)
+            );
+    }
 
-	@Test
-	void testForReact() {
-		when(mockFighter.getAttribute(AttributeType.DEXTERITY))
-			.thenReturn(Optional.of(AttributeUtility.buildDexterity(85)));
-		dbro.update();
-		assertTrue(dbro.reactEnabled());
-		
-		dbro.reactSuccessful();
-		dbro.reactSuccessful();
-		
-		for (int i=1; i<dbro.calculateBeatCount(); i++) {
-			assertFalse(dbro.reactEnabled());
-			dbro.update();
-		}
-		assertTrue(dbro.reactEnabled());
-	}
+    @Test
+    void testForReact() {
+        when(mockFighter.getAttribute(AttributeType.DEXTERITY))
+            .thenReturn(Optional.of(AttributeUtility.buildDexterity(85)));
+        dbro.update();
+        assertTrue(dbro.reactEnabled());
+        
+        dbro.reactSuccessful();
+        dbro.reactSuccessful();
+        
+        for (int i=1; i<dbro.calculateBeatCount(); i++) {
+            assertFalse(dbro.reactEnabled());
+            dbro.update();
+        }
+        assertTrue(dbro.reactEnabled());
+    }
 
 }

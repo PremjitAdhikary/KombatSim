@@ -18,40 +18,40 @@ import practice.premjit.patterns.kombatsim.strategies.AbstractFighterReactionStr
  *
  */
 public class BasicReactionStrategy extends AbstractFighterReactionStrategy {
-	protected DexterityBasedReactionObserver reactionObserver;
+    protected DexterityBasedReactionObserver reactionObserver;
 
-	public BasicReactionStrategy(AbstractFighter fighter) {
-		super(fighter);
-		reactionObserver = new DexterityBasedReactionObserver();
-		reactionObserver.setFighter(this.fighter);
-		this.fighter.registerObserver(reactionObserver);
-	}
+    public BasicReactionStrategy(AbstractFighter fighter) {
+        super(fighter);
+        reactionObserver = new DexterityBasedReactionObserver();
+        reactionObserver.setFighter(this.fighter);
+        this.fighter.registerObserver(reactionObserver);
+    }
 
-	@Override
-	protected Optional<ReactionCommand> selectReaction(Optional<Move> move) {
-		if (!reactionObserver.reactEnabled()) {
-			return Optional.empty();
-		}
-		
-		List<ReactionCommand> allEnabledReactions = fighter.allReactions()
-				.stream()
-				.filter( a -> a.canBeExecuted(move) )
-				.collect(Collectors.toList());
-		if (allEnabledReactions.isEmpty())
-			return Optional.empty(); 
-	
-		int selectedReaction = Randomizer.randomInteger(allEnabledReactions.size()-1);
-		return Optional.of(allEnabledReactions.get(selectedReaction));
-	}
+    @Override
+    protected Optional<ReactionCommand> selectReaction(Optional<Move> move) {
+        if (!reactionObserver.reactEnabled()) {
+            return Optional.empty();
+        }
+        
+        List<ReactionCommand> allEnabledReactions = fighter.allReactions()
+                .stream()
+                .filter( a -> a.canBeExecuted(move) )
+                .collect(Collectors.toList());
+        if (allEnabledReactions.isEmpty())
+            return Optional.empty(); 
+    
+        int selectedReaction = Randomizer.randomInteger(allEnabledReactions.size()-1);
+        return Optional.of(allEnabledReactions.get(selectedReaction));
+    }
 
-	@Override
-	protected boolean execute(Optional<ReactionCommand> reaction, Optional<Move> move) {
-		if (!reaction.isPresent()) 
-			return false;
-		
-		reactionObserver.reactSuccessful();
-		reaction.get().execute(move);
-		return true;
-	}
+    @Override
+    protected boolean execute(Optional<ReactionCommand> reaction, Optional<Move> move) {
+        if (!reaction.isPresent()) 
+            return false;
+        
+        reactionObserver.reactSuccessful();
+        reaction.get().execute(move);
+        return true;
+    }
 
 }

@@ -35,74 +35,74 @@ import practice.premjit.patterns.kombatsim.strategies.magic.SpellBook;
 
 @ExtendWith(MockitoExtension.class)
 class ActionSpellTest {
-	@Mock Mage mockMage;
-	@Mock SpellBook mockBook;
-	ActionSpell spell;
-	
-	@BeforeEach
-	void init() {
-		KombatLogger.getLogger().disableLogging();
-		spell = ActionSpell.create( action -> 
-					action.mage(mockMage).name("test").book(mockBook).move(null).cooldown(3) );
-	}
-	
-	@Test
-	@DisplayName("spell readiness")
-	void testSpellReadiness() {
-		assertFalse(spell.isReady()); // ActionSpell starts with a cooldown, so not ready at first
-		spell.cooldown.reset();
-		assertTrue(spell.isReady());
-	}
-	
-	@Test
-	@DisplayName("when spell not ready")
-	void testWhenSpellNotReady() {
-		assertFalse(spell.canBeExecuted());
-	}
-	
-	@Test
-	@DisplayName("when spell ready and mage doesnt have mana")
-	void testWhenSpellReadyAndMageNoMana() {
-		spell.cooldown.reset();
-		assertTrue(spell.isReady());
-		when(mockMage.currentMana()).thenReturn(0.0);
-		assertFalse(spell.canBeExecuted());
-	}
-	
-	@TestInstance(Lifecycle.PER_CLASS)
-	@Nested
-	@DisplayName("when mage with mana")
-	class WhenMageWithMana {
-		@Captor ArgumentCaptor<Move> moveArgument;
-		VariableAttribute mana;
+    @Mock Mage mockMage;
+    @Mock SpellBook mockBook;
+    ActionSpell spell;
+    
+    @BeforeEach
+    void init() {
+        KombatLogger.getLogger().disableLogging();
+        spell = ActionSpell.create( action -> 
+                    action.mage(mockMage).name("test").book(mockBook).move(null).cooldown(3) );
+    }
+    
+    @Test
+    @DisplayName("spell readiness")
+    void testSpellReadiness() {
+        assertFalse(spell.isReady()); // ActionSpell starts with a cooldown, so not ready at first
+        spell.cooldown.reset();
+        assertTrue(spell.isReady());
+    }
+    
+    @Test
+    @DisplayName("when spell not ready")
+    void testWhenSpellNotReady() {
+        assertFalse(spell.canBeExecuted());
+    }
+    
+    @Test
+    @DisplayName("when spell ready and mage doesnt have mana")
+    void testWhenSpellReadyAndMageNoMana() {
+        spell.cooldown.reset();
+        assertTrue(spell.isReady());
+        when(mockMage.currentMana()).thenReturn(0.0);
+        assertFalse(spell.canBeExecuted());
+    }
+    
+    @TestInstance(Lifecycle.PER_CLASS)
+    @Nested
+    @DisplayName("when mage with mana")
+    class WhenMageWithMana {
+        @Captor ArgumentCaptor<Move> moveArgument;
+        VariableAttribute mana;
 
-		@Test
-		void testWhenSpellReady() {
-			spell.cooldown.reset();
-			assertTrue(spell.isReady());
-			when(mockMage.currentMana()).thenReturn(10.0);
-			assertTrue(spell.canBeExecuted());
-		}
+        @Test
+        void testWhenSpellReady() {
+            spell.cooldown.reset();
+            assertTrue(spell.isReady());
+            when(mockMage.currentMana()).thenReturn(10.0);
+            assertTrue(spell.canBeExecuted());
+        }
 
-		@Test
-		void testWhenSpellExecute() {
-			spell.cooldown.reset();
-			mana = AttributeUtility.buildMana(30, 25);
-			when(mockMage.getAttribute(AttributeType.MANA)).thenReturn(Optional.of(mana));
-			when(mockMage.currentMana()).thenReturn(mana.current());
-			Supplier<Move> moveSupplier = mock(Supplier.class);
-			spell.moveSupplier = moveSupplier;
-			Move move = mock(Move.class);
-			when(moveSupplier.get()).thenReturn(move);
-			ArenaMediator mockArena = mock(ArenaMediator.class);
-			when(mockMage.arena()).thenReturn(mockArena);
-			
-			spell.execute();
-			verify(mockArena).sendMove(moveArgument.capture(), eq(Recipient.OPPONENT), eq(mockMage));
-			assertEquals(move, moveArgument.getValue());
-			assertEquals(24, mana.current());
-		}
-		
-	}
+        @Test
+        void testWhenSpellExecute() {
+            spell.cooldown.reset();
+            mana = AttributeUtility.buildMana(30, 25);
+            when(mockMage.getAttribute(AttributeType.MANA)).thenReturn(Optional.of(mana));
+            when(mockMage.currentMana()).thenReturn(mana.current());
+            Supplier<Move> moveSupplier = mock(Supplier.class);
+            spell.moveSupplier = moveSupplier;
+            Move move = mock(Move.class);
+            when(moveSupplier.get()).thenReturn(move);
+            ArenaMediator mockArena = mock(ArenaMediator.class);
+            when(mockMage.arena()).thenReturn(mockArena);
+            
+            spell.execute();
+            verify(mockArena).sendMove(moveArgument.capture(), eq(Recipient.OPPONENT), eq(mockMage));
+            assertEquals(move, moveArgument.getValue());
+            assertEquals(24, mana.current());
+        }
+        
+    }
 
 }

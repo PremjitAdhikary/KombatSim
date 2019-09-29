@@ -15,127 +15,127 @@ import practice.premjit.patterns.kombatsim.strategies.ActionStrategy;
 import practice.premjit.patterns.kombatsim.strategies.ReactionStrategy;
 
 public abstract class AbstractTeam extends AbstractFighter {
-	protected ProxyArena proxyArena;
+    protected ProxyArena proxyArena;
 
-	protected AbstractTeam(String name, ArenaMediator arena) {
-		super(name, arena);
-		id = Randomizer.generateId();
-	}
-	
-	protected abstract AbstractFighter currentFighter();
-	
-	public ArenaMediator proxyArena() {
-		return proxyArena;
-	}
-	
-	@Override
-	public String name() {
-		return currentFighter().name();
-	}
+    protected AbstractTeam(String name, ArenaMediator arena) {
+        super(name, arena);
+        id = Randomizer.generateId();
+    }
+    
+    protected abstract AbstractFighter currentFighter();
+    
+    public ArenaMediator proxyArena() {
+        return proxyArena;
+    }
+    
+    @Override
+    public String name() {
+        return currentFighter().name();
+    }
 
-	@Override
-	public String fighterType() {
-		return currentFighter().fighterType();
-	}
+    @Override
+    public String fighterType() {
+        return currentFighter().fighterType();
+    }
 
-	@Override
-	public String fighterSubType() {
-		return currentFighter().fighterSubType();
-	}
+    @Override
+    public String fighterSubType() {
+        return currentFighter().fighterSubType();
+    }
 
-	@Override
-	public void setFighterType(String fighterType) {
-		// do nothing
-	}
+    @Override
+    public void setFighterType(String fighterType) {
+        // do nothing
+    }
 
-	@Override
-	public void setFighterSubType(String fighterSubType) {
-		// do nothing
-	}
+    @Override
+    public void setFighterSubType(String fighterSubType) {
+        // do nothing
+    }
 
-	@Override
-	public ArenaMediator arena() {
-		return this.arena;
-	}
-	
-	@Override
-	public void addAttribute(Attribute attr) {
-		// do nothing
-	}
-	
-	@Override
-	public Optional<Attribute> getAttribute(AttributeType type) {
-		return currentFighter().getAttribute(type);
-	}
-	
-	@Override
-	public Optional<Attribute> getPrimaryAttribute() {
-		return currentFighter().getPrimaryAttribute();
-	}
-	
-	@Override
-	public void addAction(ActionCommand action) {
-		// do nothing
-	}
-	
-	@Override
-	public List<ActionCommand> allActions() {
-		return currentFighter().allActions();
-	}
-	
-	@Override
-	public void addReaction(ReactionCommand reaction) {
-		// do nothing
-	}
-	
-	@Override
-	public List<ReactionCommand> allReactions() {
-		return currentFighter().allReactions();
-	}
+    @Override
+    public ArenaMediator arena() {
+        return this.arena;
+    }
+    
+    @Override
+    public void addAttribute(Attribute attr) {
+        // do nothing
+    }
+    
+    @Override
+    public Optional<Attribute> getAttribute(AttributeType type) {
+        return currentFighter().getAttribute(type);
+    }
+    
+    @Override
+    public Optional<Attribute> getPrimaryAttribute() {
+        return currentFighter().getPrimaryAttribute();
+    }
+    
+    @Override
+    public void addAction(ActionCommand action) {
+        // do nothing
+    }
+    
+    @Override
+    public List<ActionCommand> allActions() {
+        return currentFighter().allActions();
+    }
+    
+    @Override
+    public void addReaction(ReactionCommand reaction) {
+        // do nothing
+    }
+    
+    @Override
+    public List<ReactionCommand> allReactions() {
+        return currentFighter().allReactions();
+    }
 
-	@Override
-	public ActionStrategy getActionStrategy() {
-		return currentFighter().getActionStrategy();
-	}
+    @Override
+    public ActionStrategy getActionStrategy() {
+        return currentFighter().getActionStrategy();
+    }
 
-	@Override
-	public void setActionStrategy(ActionStrategy actionPerformer) {
-		// do nothing
-	}
+    @Override
+    public void setActionStrategy(ActionStrategy actionPerformer) {
+        // do nothing
+    }
 
-	@Override
-	public ReactionStrategy getReactionStrategy() {
-		return currentFighter().getReactionStrategy();
-	}
+    @Override
+    public ReactionStrategy getReactionStrategy() {
+        return currentFighter().getReactionStrategy();
+    }
 
-	@Override
-	public void setReactionStrategy(ReactionStrategy reactionPerformer) {
-		// do nothing
-	}
+    @Override
+    public void setReactionStrategy(ReactionStrategy reactionPerformer) {
+        // do nothing
+    }
 
-	@Override
-	public double maxLife() {
-		return currentFighter().maxLife();
-	}
+    @Override
+    public double maxLife() {
+        return currentFighter().maxLife();
+    }
 
-	@Override
-	public double currentLife() {
-		return currentFighter().currentLife();
-	}
+    @Override
+    public double currentLife() {
+        return currentFighter().currentLife();
+    }
 
-	@Override
-	public void act() {
-		// do nothing
-	}
-	
-	@Override
-	public int id() {
-		return id;
-	}
-	
-	@Override
-	public Map<String, String> mapify() {
-		return currentFighter().mapify();
-	}
+    @Override
+    public void act() {
+        // do nothing
+    }
+    
+    @Override
+    public int id() {
+        return id;
+    }
+    
+    @Override
+    public Map<String, String> mapify() {
+        return currentFighter().mapify();
+    }
 
 }

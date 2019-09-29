@@ -9,10 +9,10 @@ import practice.premjit.patterns.kombatsim.beats.TikTok;
  *
  */
 public class Backyard extends AbstractArena {
-	
-	public Backyard() {
-		super(ArenaFactory.BACKYARD);
-		tiktok = new TikTok();
-	}
+    
+    public Backyard() {
+        super(ArenaFactory.BACKYARD);
+        tiktok = new TikTok();
+    }
 
 }

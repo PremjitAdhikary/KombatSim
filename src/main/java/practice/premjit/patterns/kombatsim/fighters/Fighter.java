@@ -6,13 +6,13 @@ import practice.premjit.patterns.kombatsim.moves.Move;
 import practice.premjit.patterns.kombatsim.visitors.FighterVisitor;
 
 public interface Fighter {
-	
-	double maxLife();
-	double currentLife();
-	
-	void act();
-	void react(Optional<Move> move);
-	
-	void accept(FighterVisitor visitor);
+    
+    double maxLife();
+    double currentLife();
+    
+    void act();
+    void react(Optional<Move> move);
+    
+    void accept(FighterVisitor visitor);
 
 }

@@ -30,107 +30,107 @@ import practice.premjit.patterns.kombatsim.fighters.AbstractFighter;
 
 @ExtendWith(MockitoExtension.class)
 class VariableAttributeModifierTest {
-	VariableAttributeModifier vam;
-	VariableAttribute va;
-	
-	@BeforeEach
-	public void init() {
-		KombatLogger.getLogger().disableLogging();
-	}
-	
-	@Nested
-	@DisplayName("when positive values are added")
-	class WhenPositive {
-		
-		@BeforeEach
-		public void init() {
-			va = AttributeUtility.buildStamina(100, 100);
-			vam = new VariableAttributeModifier(va, 10);
-		}
+    VariableAttributeModifier vam;
+    VariableAttribute va;
+    
+    @BeforeEach
+    public void init() {
+        KombatLogger.getLogger().disableLogging();
+    }
+    
+    @Nested
+    @DisplayName("when positive values are added")
+    class WhenPositive {
+        
+        @BeforeEach
+        public void init() {
+            va = AttributeUtility.buildStamina(100, 100);
+            vam = new VariableAttributeModifier(va, 10);
+        }
 
-		@Test
-		void testAfterUpdateWithFullStamina() {
-			assertEquals(100, va.current(), 0.1);
-			vam.update();
-			assertEquals(100, va.current(), 0.1);
-		}
+        @Test
+        void testAfterUpdateWithFullStamina() {
+            assertEquals(100, va.current(), 0.1);
+            vam.update();
+            assertEquals(100, va.current(), 0.1);
+        }
 
-		@Test
-		void testAfterUpdateWithHalfStamina() {
-			va.incrementCurrent(-50);
-			assertEquals(50, va.current(), 0.1);
-			vam.update();
-			vam.update();
-			assertEquals(70, va.current(), 0.1);
-		}
-	}
-	
-	@Nested
-	@DisplayName("when negative values are added")
-	class WhenNegative {
-		
-		@BeforeEach
-		public void init() {
-			va = AttributeUtility.buildStamina(100, 100);
-			vam = new VariableAttributeModifier(va, -10);
-		}
+        @Test
+        void testAfterUpdateWithHalfStamina() {
+            va.incrementCurrent(-50);
+            assertEquals(50, va.current(), 0.1);
+            vam.update();
+            vam.update();
+            assertEquals(70, va.current(), 0.1);
+        }
+    }
+    
+    @Nested
+    @DisplayName("when negative values are added")
+    class WhenNegative {
+        
+        @BeforeEach
+        public void init() {
+            va = AttributeUtility.buildStamina(100, 100);
+            vam = new VariableAttributeModifier(va, -10);
+        }
 
-		@Test
-		void testAfterUpdateWithFullStamina() {
-			assertEquals(100, va.current(), 0.1);
-			vam.update();
-			assertEquals(90, va.current(), 0.1);
-		}
+        @Test
+        void testAfterUpdateWithFullStamina() {
+            assertEquals(100, va.current(), 0.1);
+            vam.update();
+            assertEquals(90, va.current(), 0.1);
+        }
 
-		@Test
-		void testAfterUpdateWithHalfStamina() {
-			va.incrementCurrent(-50);
-			assertEquals(50, va.current(), 0.1);
-			vam.update();
-			vam.update();
-			assertEquals(30, va.current(), 0.1);
-		}
+        @Test
+        void testAfterUpdateWithHalfStamina() {
+            va.incrementCurrent(-50);
+            assertEquals(50, va.current(), 0.1);
+            vam.update();
+            vam.update();
+            assertEquals(30, va.current(), 0.1);
+        }
 
-		@Test
-		void testAfterUpdateWithNoStamina() {
-			va.incrementCurrent(-100);
-			assertEquals(0, va.current(), 0.1);
-			vam.update();
-			assertEquals(0, va.current(), 0.1);
-		}
-	}
-	
-	@TestInstance(Lifecycle.PER_CLASS)
-	@Nested
-	@DisplayName("when temporary modification")
-	class WhenTemporaryModification {
-		@Mock AbstractFighter mockFighter;
-		
-		@BeforeEach
-		public void init() {
-			va = AttributeUtility.buildLife(50);
-			when(mockFighter.getAttribute(AttributeType.LIFE)).thenReturn(Optional.of(va));
-			vam = new VariableAttributeModifier(mockFighter, AttributeType.LIFE, -5, 3);
-		}
+        @Test
+        void testAfterUpdateWithNoStamina() {
+            va.incrementCurrent(-100);
+            assertEquals(0, va.current(), 0.1);
+            vam.update();
+            assertEquals(0, va.current(), 0.1);
+        }
+    }
+    
+    @TestInstance(Lifecycle.PER_CLASS)
+    @Nested
+    @DisplayName("when temporary modification")
+    class WhenTemporaryModification {
+        @Mock AbstractFighter mockFighter;
+        
+        @BeforeEach
+        public void init() {
+            va = AttributeUtility.buildLife(50);
+            when(mockFighter.getAttribute(AttributeType.LIFE)).thenReturn(Optional.of(va));
+            vam = new VariableAttributeModifier(mockFighter, AttributeType.LIFE, -5, 3);
+        }
 
-		@ParameterizedTest
-		@MethodSource("provideArgumentsForTestAfterNBeats")
-		void testAfterNBeats(int beats, double life, int times) {
-			for (int i=0; i<beats; i++)
-				vam.update();
-			verify(mockFighter, times(times)).unregisterObserver(any(BeatObserver.class));
-			assertEquals(life, va.current(), 0.1);
-		}
-		
-		Stream<Arguments> provideArgumentsForTestAfterNBeats() {
-			return Stream.of(
-					Arguments.of(0, 50, 0),
-					Arguments.of(1, 45, 0),
-					Arguments.of(2, 40, 0),
-					Arguments.of(3, 35, 1),
-					Arguments.of(5, 35, 1)
-				);
-		}
-	}
+        @ParameterizedTest
+        @MethodSource("provideArgumentsForTestAfterNBeats")
+        void testAfterNBeats(int beats, double life, int times) {
+            for (int i=0; i<beats; i++)
+                vam.update();
+            verify(mockFighter, times(times)).unregisterObserver(any(BeatObserver.class));
+            assertEquals(life, va.current(), 0.1);
+        }
+        
+        Stream<Arguments> provideArgumentsForTestAfterNBeats() {
+            return Stream.of(
+                    Arguments.of(0, 50, 0),
+                    Arguments.of(1, 45, 0),
+                    Arguments.of(2, 40, 0),
+                    Arguments.of(3, 35, 1),
+                    Arguments.of(5, 35, 1)
+                );
+        }
+    }
 
 }

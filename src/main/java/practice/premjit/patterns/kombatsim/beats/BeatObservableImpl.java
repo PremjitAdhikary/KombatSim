@@ -10,27 +10,27 @@ import java.util.List;
  *
  */
 public class BeatObservableImpl implements BeatObservable {
-	List<BeatObserver> observers;
-	
-	public BeatObservableImpl() {
-		observers = new ArrayList<>();
-	}
+    List<BeatObserver> observers;
+    
+    public BeatObservableImpl() {
+        observers = new ArrayList<>();
+    }
 
-	@Override
-	public void registerObserver(BeatObserver observer) {
-		observers.add(observer);
-	}
+    @Override
+    public void registerObserver(BeatObserver observer) {
+        observers.add(observer);
+    }
 
-	@Override
-	public void unregisterObserver(BeatObserver observer) {
-		observers.remove(observer);
-	}
+    @Override
+    public void unregisterObserver(BeatObserver observer) {
+        observers.remove(observer);
+    }
 
-	@Override
-	public void notifyObservers() {
-		for (BeatObserver observer : observers.toArray(new BeatObserver[0])) {
-			observer.update();
-		}
-	}
+    @Override
+    public void notifyObservers() {
+        for (BeatObserver observer : observers.toArray(new BeatObserver[0])) {
+            observer.update();
+        }
+    }
 
 }

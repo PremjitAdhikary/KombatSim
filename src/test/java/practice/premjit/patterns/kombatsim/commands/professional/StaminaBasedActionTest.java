@@ -38,72 +38,72 @@ import practice.premjit.patterns.kombatsim.moves.damages.PhysicalDamage;
 
 @ExtendWith(MockitoExtension.class)
 class StaminaBasedActionTest {
-	@Mock AbstractFighter mockFighter;
-	StaminaBasedAction staminaAction;
-	
-	@BeforeEach
-	void init() {
-		KombatLogger.getLogger().disableLogging();
-	}
-	
-	@Test
-	@DisplayName("when fighter with no stamina")
-	void testWhenFighterWithNoStamina() {
-		when(mockFighter.getAttribute(AttributeType.STAMINA)).thenReturn(Optional.empty());
-		staminaAction = new StaminaBasedAction(mockFighter, "test");
-		assertFalse(staminaAction.canBeExecuted());
-	}
-	
-	@TestInstance(Lifecycle.PER_CLASS)
-	@Nested
-	@DisplayName("when fighter with stamina")
-	class WhenFighterWithStamina {
-		@Captor ArgumentCaptor<Move> moveArgument;
-		VariableAttribute stamina;
+    @Mock AbstractFighter mockFighter;
+    StaminaBasedAction staminaAction;
+    
+    @BeforeEach
+    void init() {
+        KombatLogger.getLogger().disableLogging();
+    }
+    
+    @Test
+    @DisplayName("when fighter with no stamina")
+    void testWhenFighterWithNoStamina() {
+        when(mockFighter.getAttribute(AttributeType.STAMINA)).thenReturn(Optional.empty());
+        staminaAction = new StaminaBasedAction(mockFighter, "test");
+        assertFalse(staminaAction.canBeExecuted());
+    }
+    
+    @TestInstance(Lifecycle.PER_CLASS)
+    @Nested
+    @DisplayName("when fighter with stamina")
+    class WhenFighterWithStamina {
+        @Captor ArgumentCaptor<Move> moveArgument;
+        VariableAttribute stamina;
 
-		@ParameterizedTest
-		@MethodSource("provideArgumentsForTestCanBeExecuted")
-		void testCanBeExecuted(int input, boolean expected) {
-			stamina = AttributeUtility.buildStamina(100, input);
-			when(mockFighter.getAttribute(AttributeType.STAMINA)).thenReturn(Optional.of(stamina));
-			staminaAction = new StaminaBasedAction(mockFighter, "test");
-			assertEquals(expected, staminaAction.canBeExecuted());
-		}
-		
-		Stream<Arguments> provideArgumentsForTestCanBeExecuted() {
-			return Stream.of(
-					Arguments.of(35, false),
-					Arguments.of(45, true)
-				);
-		}
+        @ParameterizedTest
+        @MethodSource("provideArgumentsForTestCanBeExecuted")
+        void testCanBeExecuted(int input, boolean expected) {
+            stamina = AttributeUtility.buildStamina(100, input);
+            when(mockFighter.getAttribute(AttributeType.STAMINA)).thenReturn(Optional.of(stamina));
+            staminaAction = new StaminaBasedAction(mockFighter, "test");
+            assertEquals(expected, staminaAction.canBeExecuted());
+        }
+        
+        Stream<Arguments> provideArgumentsForTestCanBeExecuted() {
+            return Stream.of(
+                    Arguments.of(35, false),
+                    Arguments.of(45, true)
+                );
+        }
 
-		@ParameterizedTest
-		@MethodSource("provideArgumentsForTestExecute")
-		void testExecute(int input, double expectedDamage, double expectedStamina) {
-			ArenaMediator mockArena = mock(ArenaMediator.class);
-			stamina = AttributeUtility.buildStamina(100, input);
-			when(mockFighter.getAttribute(AttributeType.STAMINA)).thenReturn(Optional.of(stamina));
-			when(mockFighter.arena()).thenReturn(mockArena);
-			
-			staminaAction = new StaminaBasedAction(mockFighter, "test");
-			staminaAction.execute();
-			verify(mockArena).sendMove(moveArgument.capture(), eq(Recipient.OPPONENT), eq(mockFighter));
-			assertTrue(moveArgument.getValue() instanceof PhysicalDamage);
-			
-			PhysicalDamage damage = (PhysicalDamage) moveArgument.getValue();
-			assertTrue(damage.amount() >= expectedDamage);
-			assertTrue(damage.amount() <= 10 + expectedDamage);
-			assertEquals(expectedStamina, stamina.current());
-		}
-		
-		Stream<Arguments> provideArgumentsForTestExecute() {
-			return Stream.of(
-					Arguments.of(45, 40, 5),
-					Arguments.of(70, 60, 10),
-					Arguments.of(95, 80, 15)
-				);
-		}
-		
-	}
+        @ParameterizedTest
+        @MethodSource("provideArgumentsForTestExecute")
+        void testExecute(int input, double expectedDamage, double expectedStamina) {
+            ArenaMediator mockArena = mock(ArenaMediator.class);
+            stamina = AttributeUtility.buildStamina(100, input);
+            when(mockFighter.getAttribute(AttributeType.STAMINA)).thenReturn(Optional.of(stamina));
+            when(mockFighter.arena()).thenReturn(mockArena);
+            
+            staminaAction = new StaminaBasedAction(mockFighter, "test");
+            staminaAction.execute();
+            verify(mockArena).sendMove(moveArgument.capture(), eq(Recipient.OPPONENT), eq(mockFighter));
+            assertTrue(moveArgument.getValue() instanceof PhysicalDamage);
+            
+            PhysicalDamage damage = (PhysicalDamage) moveArgument.getValue();
+            assertTrue(damage.amount() >= expectedDamage);
+            assertTrue(damage.amount() <= 10 + expectedDamage);
+            assertEquals(expectedStamina, stamina.current());
+        }
+        
+        Stream<Arguments> provideArgumentsForTestExecute() {
+            return Stream.of(
+                    Arguments.of(45, 40, 5),
+                    Arguments.of(70, 60, 10),
+                    Arguments.of(95, 80, 15)
+                );
+        }
+        
+    }
 
 }

@@ -17,49 +17,49 @@ import practice.premjit.patterns.kombatsim.moves.damages.PhysicalDamage;
  *
  */
 public abstract class AbstractPhysicalActionCommand implements ActionCommand, Identifiable {
-	protected AbstractFighter fighter;
-	protected String name;
-	protected int id;
-	
-	public AbstractPhysicalActionCommand(AbstractFighter fighter) {
-		this.fighter = fighter;
-		id = Randomizer.generateId();
-	}
+    protected AbstractFighter fighter;
+    protected String name;
+    protected int id;
+    
+    public AbstractPhysicalActionCommand(AbstractFighter fighter) {
+        this.fighter = fighter;
+        id = Randomizer.generateId();
+    }
 
-	@Override
-	public void execute() {
-		PhysicalDamage damage = calculatePhysicalDamage();
-		sendPhysicalDamage(damage);
-	}
-	
-	@Override
-	public String name() {
-		return name;
-	}
-	
-	@Override
-	public int id() {
-		return id;
-	}
-	
-	protected abstract PhysicalDamage calculatePhysicalDamage();
-	
-	protected void sendPhysicalDamage(PhysicalDamage damage) {
-		KombatLogger.getLogger().log(
-				KombatLogger.LEVEL.HIGH, KombatLogger.EVENT_TYPE.ACTION, fighter.mapify(), mapify(damage));
-		this.fighter.arena().sendMove(damage, Recipient.OPPONENT, this.fighter);
-	}
-	
-	
-	public Map<String, String> mapify(PhysicalDamage damage) {
-		try {
-			return KombatLogger.mapBuilder()
-					.withName(name)
-					.withPartial(damage.mapify())
-					.build();
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    @Override
+    public void execute() {
+        PhysicalDamage damage = calculatePhysicalDamage();
+        sendPhysicalDamage(damage);
+    }
+    
+    @Override
+    public String name() {
+        return name;
+    }
+    
+    @Override
+    public int id() {
+        return id;
+    }
+    
+    protected abstract PhysicalDamage calculatePhysicalDamage();
+    
+    protected void sendPhysicalDamage(PhysicalDamage damage) {
+        KombatLogger.getLogger().log(
+                KombatLogger.LEVEL.HIGH, KombatLogger.EVENT_TYPE.ACTION, fighter.mapify(), mapify(damage));
+        this.fighter.arena().sendMove(damage, Recipient.OPPONENT, this.fighter);
+    }
+    
+    
+    public Map<String, String> mapify(PhysicalDamage damage) {
+        try {
+            return KombatLogger.mapBuilder()
+                    .withName(name)
+                    .withPartial(damage.mapify())
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

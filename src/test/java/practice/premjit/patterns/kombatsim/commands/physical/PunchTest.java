@@ -31,52 +31,52 @@ import practice.premjit.patterns.kombatsim.moves.damages.PhysicalDamage;
 
 @ExtendWith(MockitoExtension.class)
 class PunchTest {
-	@Mock ArenaMediator mockArena;
-	@Mock AbstractFighter mockFighter;
-	@InjectMocks Punch punch;
-	
-	@BeforeEach
-	void init() {
-		KombatLogger.getLogger().disableLogging();
-	}
-	
-	@Test
-	@DisplayName("when fighter with no strength")
-	void testWhenFighterWithNoStrength() {
-		when(mockFighter.getAttribute(AttributeType.STRENGTH)).thenReturn(Optional.empty());
-		assertFalse(punch.canBeExecuted());
-	}
-	
-	@Nested
-	@DisplayName("when fighter with strength")
-	class WhenFighterWithStrength {
-		double strength = 40;
-		@Captor ArgumentCaptor<Move> moveArgument;
-		
-		@BeforeEach
-		void init() {
-			when(mockFighter.getAttribute(AttributeType.STRENGTH))
-				.thenReturn(Optional.of(AttributeUtility.buildStrength(strength)));
-		}
-		
-		@Test
-		void testCanBeExecuted() {
-			assertTrue(punch.canBeExecuted());
-		}
+    @Mock ArenaMediator mockArena;
+    @Mock AbstractFighter mockFighter;
+    @InjectMocks Punch punch;
+    
+    @BeforeEach
+    void init() {
+        KombatLogger.getLogger().disableLogging();
+    }
+    
+    @Test
+    @DisplayName("when fighter with no strength")
+    void testWhenFighterWithNoStrength() {
+        when(mockFighter.getAttribute(AttributeType.STRENGTH)).thenReturn(Optional.empty());
+        assertFalse(punch.canBeExecuted());
+    }
+    
+    @Nested
+    @DisplayName("when fighter with strength")
+    class WhenFighterWithStrength {
+        double strength = 40;
+        @Captor ArgumentCaptor<Move> moveArgument;
+        
+        @BeforeEach
+        void init() {
+            when(mockFighter.getAttribute(AttributeType.STRENGTH))
+                .thenReturn(Optional.of(AttributeUtility.buildStrength(strength)));
+        }
+        
+        @Test
+        void testCanBeExecuted() {
+            assertTrue(punch.canBeExecuted());
+        }
 
-		@RepeatedTest(10)
-		void testExecute() {
-			when(mockFighter.arena()).thenReturn(mockArena);
-			punch.execute();
-			
-			verify(mockArena).sendMove(moveArgument.capture(), eq(Recipient.OPPONENT), eq(mockFighter));
-			assertTrue(moveArgument.getValue() instanceof PhysicalDamage);
-			
-			PhysicalDamage damage = (PhysicalDamage) moveArgument.getValue();
-			assertTrue(damage.amount() >= Punch.MIN_DAMAGE + (strength*0.25));
-			assertTrue(damage.amount() <= Punch.MAX_DAMAGE + (strength*0.25));
-		}
-		
-	}
+        @RepeatedTest(10)
+        void testExecute() {
+            when(mockFighter.arena()).thenReturn(mockArena);
+            punch.execute();
+            
+            verify(mockArena).sendMove(moveArgument.capture(), eq(Recipient.OPPONENT), eq(mockFighter));
+            assertTrue(moveArgument.getValue() instanceof PhysicalDamage);
+            
+            PhysicalDamage damage = (PhysicalDamage) moveArgument.getValue();
+            assertTrue(damage.amount() >= Punch.MIN_DAMAGE + (strength*0.25));
+            assertTrue(damage.amount() <= Punch.MAX_DAMAGE + (strength*0.25));
+        }
+        
+    }
 
 }
