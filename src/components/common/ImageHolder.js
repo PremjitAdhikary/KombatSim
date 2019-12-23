@@ -11,6 +11,7 @@ const ImageHolder = props => {
     <div className="center">
       <div className="regular" onClick={() => setLargeDivDisabled(false)}>
         <img 
+          className="regular-content" 
           src={process.env.PUBLIC_URL + img.path} 
           alt={img.text} 
         />

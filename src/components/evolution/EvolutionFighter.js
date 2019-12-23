@@ -60,14 +60,14 @@ const EvolutionFighter = () => {
       <div className="sectionTitle">Professional Fighters</div>
       <p>
         Before I start on Professional Fighter's, a little bit on the attributes.
-        <ul>
-          <li>
-            Life keeps on varying through out the fight. Every hit taken reduces it. Let's call 
-            this variable attribute.
-          </li>
-          <li>But note that Strength and Dexterity dont't. Let's keep it as attribute.</li>
-        </ul>
       </p>
+      <ul>
+        <li>
+          Life keeps on varying through out the fight. Every hit taken reduces it. Let's call 
+          this variable attribute.
+        </li>
+        <li>But note that Strength and Dexterity dont't. Let's keep it as attribute.</li>
+      </ul>
       <p>To a Professional I added another variable attribute, <strong>Stamina</strong>.</p>
       <p>Every professional will have a custom ActionCommand based on Stamina.</p>
       <p>

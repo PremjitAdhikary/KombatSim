@@ -54,16 +54,35 @@ const processComments = (someCode) => {
   return processed;
 };
 
+const processIndentations = (someCode) => {
+  let processed = '';
+  let lineStart = true;
+  for (var i=0; i<someCode.length; i++) {
+    if (someCode[i] === '\n') {
+      processed += '<br>';
+      lineStart = true;
+    } else if (lineStart && someCode[i] === ' ') {
+      processed += '&nbsp;';
+    } else {
+      lineStart = false;
+      processed += someCode[i];
+    }
+  }
+  return processed;
+};
+
 const parseAndTag = (someCode) => {
+  someCode = processComments(someCode);
+  someCode = processIndentations(someCode);
   someCode = processKeyword(someCode);
   someCode = processAnnotations(someCode);
-  someCode = processComments(someCode);
   return someCode;
 };
 
 const CodeSnippet = (props) => {
   let someCode = parseAndTag(props.code);
-  const preBlock = { __html: "<pre>" + someCode + "</pre>" };
+  //const preBlock = { __html: "<pre>" + someCode + "</pre>" };
+  const preBlock = { __html: "<div id='pre'>" + someCode + "</div>" };
   return <div dangerouslySetInnerHTML={ preBlock }></div>;
 };
 

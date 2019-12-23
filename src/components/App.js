@@ -23,6 +23,7 @@ const EvolutionHits = lazy(() => import("./evolution/EvolutionHits"));
 const EvolutionCreators = lazy(() => import("./evolution/EvolutionCreators"));
 const EvolutionVisitors = lazy(() => import("./evolution/EvolutionVisitors"));
 const EvolutionMemento = lazy(() => import("./evolution/EvolutionMemento"));
+const EvolutionConclude = lazy(() => import("./evolution/EvolutionConclude"));
 
 const LambdaIntro = lazy(() => import("./lambda/LambdaIntro"));
 const LambdaStrategy = lazy(() => import("./lambda/LambdaStrategy"));
@@ -63,6 +64,7 @@ const App = () => {
             <Route path={getRoute("evolutionCreators").path} exact component={WaitingComponent(EvolutionCreators)} />
             <Route path={getRoute("evolutionVisitors").path} exact component={WaitingComponent(EvolutionVisitors)} />
             <Route path={getRoute("evolutionMemento").path} exact component={WaitingComponent(EvolutionMemento)} />
+            <Route path={getRoute("evolutionConclude").path} exact component={WaitingComponent(EvolutionConclude)} />
             
             <Route path={getRoute("lambdaIntro").path} exact component={WaitingComponent(LambdaIntro)} />
             <Route path={getRoute("lambdaStrategy").path} exact component={WaitingComponent(LambdaStrategy)} />

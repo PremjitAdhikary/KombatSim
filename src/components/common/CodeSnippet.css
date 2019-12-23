@@ -1,4 +1,4 @@
-pre {
+pre, #pre {
   font-family: Courier, 'New Courier', monospace;
   font-size: 15px;
   background-color: black;
@@ -6,4 +6,23 @@ pre {
   width: 80%;
   border-radius: 5px;
   margin: 5% 5% 5% 5%;
+}
+
+@media (max-width: 700px) {
+  #pre {
+    width: 100%;
+    margin: 1% 1% 1% 1%;
+    white-space: nowrap; /* keep text on one line */
+    overflow-x: scroll; /*prevent text from being shown outside the border */
+    -webkit-overflow-x-scrolling: auto;
+    /* text-overflow: ellipsis; cut off text with an ellipsis */
+  }
+
+  #pre::-webkit-scrollbar-track {
+    background: yellowgreen;
+  }
+
+  #pre::-webkit-scrollbar-thumb {
+    background: greenyellow;
+  }
 }

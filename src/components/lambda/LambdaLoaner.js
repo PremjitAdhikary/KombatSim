@@ -233,12 +233,12 @@ const LambdaLoaner = () => {
       </p>
       <p>
         Here's what you do.
-        <ul>
-          <li>Make <code>FireDamageBuilder</code> an inner class of <code>FireDamage</code>.</li>
-          <li>Make the constructor and the build() method of the builder private.</li>
-          <li>Add static method create() to <code>FireDamage</code> which loans the builder.</li>
-        </ul>
       </p>
+      <ul>
+        <li>Make <code>FireDamageBuilder</code> an inner class of <code>FireDamage</code>.</li>
+        <li>Make the constructor and the build() method of the builder private.</li>
+        <li>Add static method create() to <code>FireDamage</code> which loans the builder.</li>
+      </ul>
       <CodeSnippet code={codeLambdaBuilder} />
       <p>
         No more shared builder. You get a builder on loan, you set it up and that's it!

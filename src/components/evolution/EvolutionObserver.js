@@ -74,15 +74,13 @@ const EvolutionObserver = () => {
       <p>What I needed was some sort of stimuli to which the fighters would react to.</p>
       <p>Solution? <strong>Observer Pattern</strong>.</p>
       <ImageHolder imgId="evolutionObserverCD" imgSize="medium" />
-      <p>
-        <blockquote>
+      <blockquote>
         I had scrapped my first attempt at KombatSim just for the lack of rhythm. I had already 
         written more than 50 classes - and JUnits for all of them. That's a lot of effort put in a 
         pet project. <em>And still I scrapped</em>. But now with what I have in place with Observers 
         and Observables, I am able to achieve so much more than what I originally had thought. So 
         many different effects, which would have been impossible with the original design.
-        </blockquote>
-      </p>
+      </blockquote>
       <p>
         The Fighter is also an Observable who notifies his Observers (one of them being our <code>
         ActionObserver</code>).

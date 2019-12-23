@@ -75,7 +75,7 @@ const EvolutionMemento = () => {
       <p>And at certain intervals one of the fighters is chosen and his life restored!!</p>
       <div className="sectionTitle">Sample Code</div>
       <CodeSnippet code={code} />
-      <Navigators prev="evolutionVisitors" />
+      <Navigators prev="evolutionVisitors" next="evolutionConclude" />
     </div>
   );
 };

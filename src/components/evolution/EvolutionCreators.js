@@ -119,15 +119,71 @@ const EvolutionCreators = () => {
       <ImageHolder imgId="hierarchyFighter" imgSize="large" />
       <p>
         Note that each Fighter type has multiple subtypes.
-        <ul>
-          <li>For <code>Amateur</code>, there is Bully, Nerd and Captain</li>
-          <li>For <code>Professional</code>, there is Boxer, Karateka and Taekwondo</li>
-          <li>For <code>Hero</code>, there is Superman, Flash and Batman</li>
-          <li>For <code>Mage</code>, there is Elemental and Dark</li>
-          <li>For Enhanced Fighters (<code>Professional</code> fighters enhanced by Decorators), there 
-          is Metal-armed Boxer, Samurai and Ninja</li>
-        </ul>
       </p>
+      <ul>
+        <li>
+          For <code>Amateur</code>, there is Bully, Nerd and Captain. As mentioned earlier, these 
+          are the most basic of fighters with Life, Strength and Dexterity.
+          <ul>
+            <li>Bully is strong but slow.</li>
+            <li>Nerd is weak but fast.</li>
+            <li>Captain is balanced.</li>
+          </ul>
+        </li>
+        <li>
+          For <code>Professional</code>, there is Boxer, Karateka and Taekwondo. They have an 
+          additional attribute, stamina which they utilise to execute special hits. They are far 
+          better than any of the amateurs.
+          <ul>
+            <li>Boxer is strongest but slowest of the professionals.</li>
+            <li>Karateka is the balanced one.</li>
+            <li>Taekwondo is fastest but the weakest among the three.</li>
+          </ul>
+        </li>
+        <li>
+          For Enhanced Fighters (<code>Professional</code> fighters enhanced by Decorators), there 
+          is Metal-armed Boxer, Samurai and Ninja.
+          <ul>
+            <li>Metal-armed Boxer is just a much stronger Boxer.</li>
+            <li>
+              Samurai is an enhanced Karateka with armor and weapon. The sword restricts him 
+              from using his original attack abilities, but gives him new abilities.
+            </li>
+            <li>
+              Ninja is an enhanced Taekwondo with additional agility, weapon and projectiles. Unlike 
+              Samurai sword, Ninja's weapon doesnt restrict him from using his original atttack 
+              abilities, but on the contrary adds to it.
+            </li>
+          </ul>
+        </li>
+        <li>
+          For <code>Hero</code>, there is Superman, Flash and Batman. They have an attribute called 
+          Mojo which they use for their powers.
+          <ul>
+            <li>Superman is the strongest and very fast.</li>
+            <li>Flash is the fastest and quite strong too.</li>
+            <li>
+              Batman, being the non-super hero here, is the weakest and slowest among the three. But 
+              what he lacks there he more than makes up for it using his gadgets. So along with 
+              the vanilla version we also have an equipped version of Batman (Decorator Pattern) who 
+              is more than a match for the other gods in this category.
+            </li>
+          </ul>
+        </li>
+        <li>
+          For <code>Mage</code>, there is Elemental and Dark. They have only 2 attributes. Life and 
+          Mana. They use spells for both offense and defense. They use Mana for all the spells they 
+          cast. They are weak but make up for it with their fantastical powers and are able to match 
+          the Heroes in any fight.
+          <ul>
+            <li>Elemental uses elemental spells consisting of fire and cold.</li>
+            <li>
+              Dark uses, well, dark magic. His spells affect the core attributes and life of 
+              opponent.
+            </li>
+          </ul>
+        </li>
+      </ul>
       <p>
         Let's start with <strong>Factory Pattern</strong> to have dedicated Factories for each of 
         the Fighter types. So there is Amateur Fighter Factory, Professional Fighter Factory, 

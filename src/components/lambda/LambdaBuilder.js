@@ -163,15 +163,15 @@ const LambdaBuilder = () => {
       <CodeSnippet code={codeFunctionWeapon} />
       <p>
         A couple of points pop out:
-        <ul>
-          <li><em>baseFighter</em> and weapon name are mandatory.</li>
-          <li>At least 1 <code>WeaponCommand</code> must be added.</li>
-          <li>Call to <code>FighterDecorator.equip()</code> is mandatory at the end.</li>
-          <li><code>buildAndAddWeaponCommand()</code> is passed a 'freshly constructed' <code>
-          WeaponCommand</code>. Leads to the same problem - 'to look into documentation for what 
-          goes in a constructor'</li>
-        </ul>
       </p>
+      <ul>
+        <li><em>baseFighter</em> and weapon name are mandatory.</li>
+        <li>At least 1 <code>WeaponCommand</code> must be added.</li>
+        <li>Call to <code>FighterDecorator.equip()</code> is mandatory at the end.</li>
+        <li><code>buildAndAddWeaponCommand()</code> is passed a 'freshly constructed' <code>
+        WeaponCommand</code>. Leads to the same problem - 'to look into documentation for what 
+        goes in a constructor'</li>
+      </ul>
       <p>From the above list, two of them can be sorted out.</p>
       <p>
         Check for the presence of 'at least 1 <code>WeaponCommand</code>' and calling <code>
@@ -184,27 +184,27 @@ const LambdaBuilder = () => {
       <CodeSnippet code={codeFluentWeaponBuilder} />
       <p>
         Here the builder drives you:
-        <ul>
-          <li>At <code>sword.</code> the only api exposed is <code>name()</code></li>
-          <li>Once <code>name()</code> is set, only api exposed is <code>wielder()</code></li>
-          <li>
-            At this point you have options to:
-            <ul>
-              <li>
-                <code>addCommand()</code> - to add a <code>WeaponCommand</code>. If this path is 
-                taken..
-                <ul>
-                  <li>The next api exposed is <code>withName()</code></li>
-                  <li>Then <code>andMove()</code> is exposed</li>
-                  <li>Back to options</li>
-                </ul>
-              </li>
-              <li><code>replaceActions()</code> - to use only <code>WeaponCommand</code>s for 
-              attacks</li>
-            </ul>
-          </li>
-        </ul>
       </p>
+      <ul>
+        <li>At <code>sword.</code> the only api exposed is <code>name()</code></li>
+        <li>Once <code>name()</code> is set, only api exposed is <code>wielder()</code></li>
+        <li>
+          At this point you have options to:
+          <ul>
+            <li>
+              <code>addCommand()</code> - to add a <code>WeaponCommand</code>. If this path is 
+              taken..
+              <ul>
+                <li>The next api exposed is <code>withName()</code></li>
+                <li>Then <code>andMove()</code> is exposed</li>
+                <li>Back to options</li>
+              </ul>
+            </li>
+            <li><code>replaceActions()</code> - to use only <code>WeaponCommand</code>s for 
+            attacks</li>
+          </ul>
+        </li>
+      </ul>
       <p>Cool!</p>
       <p><em>But how?</em></p>
       <p>A lot of code actually...</p>

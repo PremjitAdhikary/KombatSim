@@ -105,10 +105,10 @@ const EvolutionAdapter = () => {
         For this the <code>ActionStrategy</code> of the team members were wrapped to only keep the 
         Offender Strategy enabled. <strong>Strategy Pattern</strong> <em>yo!</em>
       </p>
-      <p>There was another hiccup in the <code>act()</code> component.</p>
+      <p>There was another hiccup in the <code>react()</code> component.</p>
       <p><em>The Hit message to the  right recipient.</em></p>
       <p>
-        Because there were multiple fighters on the arena now, <em>how does the arena know which 
+        Because there are multiple fighters on the arena now, <em>how does the arena know which 
         recipient to send it to?</em>
       </p>
       <p>This was resolved using <strong>Proxy Pattern</strong>.</p>

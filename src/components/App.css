@@ -15,6 +15,34 @@ body, html, #container {
 		"sidebar footer";
 }
 
+@media (max-width: 700px) {
+  #container {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% auto 75% 5%;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main"
+      "footer";
+  }
+}
+
+@media (max-height: 420px) {
+  #container {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 15% auto 60% 5%;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main"
+      "footer";
+  }
+}
+
 .header {
 	grid-area: header;
   background-color: black;
@@ -34,6 +62,7 @@ body, html, #container {
   background-color: black;
   padding-left: 5%;
   padding-top: 5%;
+  overflow: auto;
   /* this is to disable the inner padding to push out the outer container */
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -56,11 +85,20 @@ body, html, #container {
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
   box-sizing: border-box;
+  color: darkslategray;
 }
 
 .footer {
 	grid-area: footer;
   background-color: black;
+}
+
+@media (max-width: 700px), (max-height: 300px) {
+  .footer {
+    white-space: nowrap; /*keep text on one line */
+    overflow: hidden; /*prevent text from being shown outside the border */
+    text-overflow: ellipsis; /*cut off text with an ellipsis*/
+  }
 }
 
 a:link, a:visited {

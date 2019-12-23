@@ -18,7 +18,8 @@ export const allRoutes = {
     {id:"evolutionHits",path:"/evolution/hits",name:"Commands & Moves"},
     {id:"evolutionCreators",path:"/evolution/creators",name:"Creators"},
     {id:"evolutionVisitors",path:"/evolution/visitors",name:"Visitors"},
-    {id:"evolutionMemento",path:"/evolution/memento",name:"One Moment"}
+    {id:"evolutionMemento",path:"/evolution/memento",name:"One Moment"},
+    {id:"evolutionConclude",path:"/evolution/conclude",name:"Conclusion"}
   ],
   lambda : [
     {id:"lambdaIntro",path:"/lambda/intro",name:"Introduction"},
