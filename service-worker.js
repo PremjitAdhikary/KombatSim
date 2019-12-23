@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/KombatSim/precache-manifest.73157ceda219cf431d7a49a933f9cc94.js"
+  "/KombatSim/precache-manifest.f74f26521291e5076261f92014dfc5fb.js"
 );
 
 self.addEventListener('message', (event) => {
